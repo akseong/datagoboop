@@ -148,7 +148,7 @@ wn <- rnorm(88000, 0, 1)
 plot(wn[1:500], pch=',', col=1)
 play(wave_norm(wn))
 
-# adding sound wave to white noise --> white noise
+# adding sound wave to white noise
 play(wave_norm(s1 + wn))
 
 ```
@@ -159,13 +159,13 @@ play(wave_norm(s1 + wn))
 
 ## middle A (A4)
 
-1 second = 44k length vector
+1 second = 44.1k length vector
 
 middle A: 44o Hz.  i.e. need to cycle through 2pi every 100 elements?
 
 ```{r middleA}
 # 1 second of A4
-mid_a <- rep(seq(0, 2*pi,length.out=100), 440)
+mid_a <- sin(rep(seq(0, 2*pi,length.out=100), 440))
 play(mid_a)
 ```
 
@@ -178,10 +178,24 @@ play(mid_a)
 $$f(n) = 2^{\frac{n-49}{12}} \times 440 \text{ Hz}$$
 
 
+
+## Pure tones
+
+The standard parameterization for a [pure tone](https://en.wikipedia.org/wiki/Pure_tone) is
+$$y(t) = A\sin (2 \pi f t + \phi),$$
+where
+
+* $A$ is the amplitude of the tone, which corresponds to loudness and should be chosen so that $y(t)$ is bounded between $[-1, 1]$,
+* $f$ is the frequency of the tone in Hz, which corresponds to pitch and should be within the interval $(\approx 20, \approx 20000)$ to be audible,
+* $t$ is the current time in seconds, and
+* $\phi$ is the phase shift of the sound, which should be within $[0, 2\pi]$. For our purposes we can usually assume this to be zero.
+
+
+
 __Write some functions:__
 
 + `pkey_to_hz(keynum)` maps piano key number to Hz
-+ `hz_to_1sec(hz)` generates 44k-length vector of sine wave with specified frequency (1 second)
++ `hz_to_1sec(hz)` generates a one-second sine wave
 + `note(pkey, vol=1)` combines them, adds volume multiplier (amplitude = volume).  
   + can feed `note()` output directly into `play()` from `audio` package. 
 
@@ -192,9 +206,14 @@ pkey_to_hz <- function(keynum){
   2^((keynum-49) / 12) * 440
 }
 
-hz_to_1sec <- function(hz){
-  # generates 440k length sine wave vector with frequency = hz
-  rep(seq(0, 2*pi, length.out = floor(44000/hz)), floor(hz))
+hz_to_1sec <- function(hz, fs = 44100){
+  # Generate time steps spanning 1 seconds
+  # Note that fs is the "sampling frequency" i.e., the number of elements in the vector played over 1 second
+  # For most systems, this is either 44100 Hz or 48000 Hz
+  t <- seq(0, 1, 1/fs)
+  
+  # Return the sine wave
+  sin(2 * pi * hz * t)
 }
 
 note <- function(pkey, vol=1){
@@ -218,8 +237,6 @@ play(note(49, .1))
 
 ```
 
-__volume specification doesn't really work?__  vol=0.25 seems louder than vol=1 ... 
-
 
 
 
@@ -233,58 +250,47 @@ _Note;_ Needed to revamp function generating 44k length vector of specified hz b
 
 
 ```{r}
+# Notes of the A scale
+Ascale <- c(49, 51, 53, 54, 56, 58, 60, 61)
 
-hz_to_1sec <- function(hz){
-  # generates 440k length sine wave vector with frequency = hz
-  outlength <- floor(44000/hz)
-  reps <- floor(hz)
-
-  unlist(mapply(out=outlength, 
-         reps=reps, 
-         function(out, reps) 
-           rep(seq(0, 2*pi, length.out = out), reps)
-         ))
- 
-  # floor arguments will make these slightly sharp
-  # and slightly shorter than 1 second
+# Concatenate the sine waves
+y_t <- c()
+for (f in Ascale) {
+  y_t <- c(y_t, note(f))
 }
 
-
-Ascale <- c(49, 51, 53, 54, 56, 58, 60, 61)
-play(note(Ascale))
-
+# Play
+play(y_t)
 ```
 
 __Hey, it works!!__
 
 
 
-But volume isn't working =(:
+We can make amplitude $A$ a function of $t$ to create dynamic changes in volume. Here's one where the amplitude has an exponential decay.
 
 ```{r}
-# testing out volume now
-play(note(
-  Ascale, 
-  vol=seq(.1:1, length.out = length(Ascale))
-  )
-)
+# Get the unmodulated tone
+y_t <- note(49)
+
+# Generate an amplitude mask of the same length
+A <- exp(-6 * (1:length(y_t))/44100)
+
+# Multiply and play
+y_t <- A * y_t
+play(y_t)
 ```
 
 
 Trying out chords
 ```{r}
-a4vec <- note(Ascale[1:6])
-vec2 <- note(Ascale[3:8])
+# Chords are sums of sines. Be sure to apply wave_norm so that the waveform stays between [-1, 1]
+Amaj <- wave_norm(note(Ascale[1]) + note(Ascale[3])   + note(Ascale[5]))
+Amin <- wave_norm(note(Ascale[1]) + note(Ascale[3]-1) + note(Ascale[5]))
 
-# this is kind of nice when executed together
-# (select both and hit ctrl + Enter)
-play(a4vec)
-play(vec2)
-
-
-# yikes!  no bueno!  be warned, it's terrible.
-play(a4vec+vec2)
-
+# Play (should be played separately)
+play(Amaj)
+play(Amin)
 ```
 
 
