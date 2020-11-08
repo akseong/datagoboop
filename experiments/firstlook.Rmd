@@ -1,0 +1,288 @@
+---
+title: "First look "
+date: "`r format(Sys.time(), '%d %B %Y')`"
+header-includes:
+  - \usepackage{bm}
+  - \usepackage{xcolor}
+  - \usepackage{amssymb}
+output: 
+  html_document:
+    df_print: paged
+    theme: flatly
+    highlight: tango #pygments
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+    smooth_scroll: true
+    code_fold: show
+  urlcolor: blue
+---
+  
+
+```{r setup, include=FALSE, message=F, echo=F, warning=F}
+# LIBRARIES----
+library(tidyverse)
+library(gridExtra)
+library(here)
+library(knitr)
+
+
+# DOCUMENT SETUP ----
+# detect pdf/html output, set chunk options, sci.notation 
+latex_out <- knitr::is_latex_output()
+knitr::opts_chunk$set(cache=F, 
+                      message=F, 
+                      echo=!latex_out, 
+                      warning=F, 
+                      fig.height=4, 
+                      fig.width=6)
+
+
+# PLOTTING FCNS----
+# default settings; transparency for base R
+pardefault <- par(no.readonly=T)
+palramp <- colorRampPalette(c("deepskyblue", "purple", "orangered"))
+transp_pal <- function(pal, alpha=75){
+  # add transparency to palette 'pal'
+  return( rgb(t(col2rgb(pal)), alpha = alpha, maxColorValue = 255) )
+} 
+
+#ggplot2 colors into base R
+gg_color <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+
+
+# TEXT/TABLE FORMATTING----
+colorize <- function(x, color="red") {
+  # text color conditional on latex/html output
+  # from rmarkdown cookbook
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{ %s}{ %s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color, x)
+  } else x
+}
+
+# kable NA handling
+options(knitr.kable.NA = '')
+
+# mykable function
+mykable <- function(tab, cap,
+                    latex_options=c("hold_position", "scale_down", "striped"), 
+                    bootstrap_options=c("striped", "hover", "condensed"), 
+                    full_width=F, position="center", ...){
+  # kable formatting conditional on latex or html output
+  if (knitr::is_latex_output()){
+    kable(x=tab, caption=cap, ...) %>%
+      kableExtra::kable_styling(latex_options = latex_options)
+  } else if (knitr::is_html_output()){
+    kable(x=tab, caption=cap, ...) %>%
+      kableExtra::kable_styling(bootstrap_options = bootstrap_options, full_width=full_width, position=position)
+  }
+}
+
+# SOURCE common functions ----
+# make a %notin% function to mirror %in%
+`%notin%` <- Negate(`%in%`)
+```
+
+
+
+
+
+
+
+
+
+
+# `audio` package
+
+## fooling around
+
+play a pitch, same pitch plus another
+
+```{r foolin}
+library(audio)
+
+pal <- transp_pal(palramp(4), alpha = 175)
+palette(pal)
+
+# continuous pitch
+s1 <- sin(1:88000/10)
+plot(s1[1:500], pch=',', main = "wave `s1`", col=1)
+play(s1)
+
+# another continuous pitch
+s2 <- sin(1:88000/20)
+plot(s2[1:500], pch=',', main = "wave `s2`", col=1)
+play(s2)
+
+
+# play together
+plot(c(s1+s2)[1:500], pch=',', main = "wave s1 + s2", col=1)
+play(s1+s2)
+
+# 2 sec white noise
+wn <- rnorm(88000, 0, 1)
+plot(wn[1:500], pch=',', col=1)
+play(wn)
+
+# adding sound wave to white noise --> white noise
+play(s1 + wn)
+
+```
+
+
+
+
+
+## middle A (A4)
+
+1 second = 44k length vector
+
+middle A: 44o Hz.  i.e. need to cycle through 2pi every 100 elements?
+
+```{r middleA}
+# 1 second of A4
+mid_a <- rep(seq(0, 2*pi,length.out=100), 440)
+play(mid_a)
+```
+
+
+
+## Piano key frequencies
+
+[Piano key frequencies](https://en.wikipedia.org/wiki/Piano_key_frequencies) gives us a mapping from the key number on a standard piano to hz_:
+
+$$f(n) = 2^{\frac{n-49}{12}} \times 440 \text{ Hz}$$
+
+
+__Write some functions:__
+
++ `pkey_to_hz(keynum)` maps piano key number to Hz
++ `hz_to_1sec(hz)` generates 44k-length vector of sine wave with specified frequency (1 second)
++ `note(pkey, vol=1)` combines them, adds volume multiplier (amplitude = volume).  
+  + can feed `note()` output directly into `play()` from `audio` package. 
+
+
+```{r basic_funcs}
+pkey_to_hz <- function(keynum){
+  # maps piano key to hz
+  2^((keynum-49) / 12) * 440
+}
+
+hz_to_1sec <- function(hz){
+  # generates 440k length sine wave vector with frequency = hz
+  rep(seq(0, 2*pi, length.out = floor(44000/hz)), floor(hz))
+}
+
+note <- function(pkey, vol=1){
+  # combines basic funcs to output playable vectors
+  vol*hz_to_1sec(hz = pkey_to_hz(keynum = pkey))
+}
+```
+
+
+
+__Test:__
+
+```{r play_basic}
+play(
+  hz_to_1sec(pkey_to_hz(49))
+)
+play(note(49, 1))
+play(note(49, .25))
+play(note(49, .1))
+
+
+```
+
+__volume specification doesn't really work?__  vol=0.25 seems louder than vol=1 ... 
+
+
+
+
+
+## play an A major scale
+
+_Note;_ Needed to revamp function generating 44k length vector of specified hz because
+
++ rep() doesn't vectorize well
++ rep() needs integer-valued arguments
+
+
+```{r}
+
+hz_to_1sec <- function(hz){
+  # generates 440k length sine wave vector with frequency = hz
+  outlength <- floor(44000/hz)
+  reps <- floor(hz)
+
+  unlist(mapply(out=outlength, 
+         reps=reps, 
+         function(out, reps) 
+           rep(seq(0, 2*pi, length.out = out), reps)
+         ))
+ 
+  # floor arguments will make these slightly sharp
+  # and slightly shorter than 1 second
+}
+
+
+Ascale <- c(49, 51, 53, 54, 56, 58, 60, 61)
+play(note(Ascale))
+
+```
+
+__Hey, it works!!__
+
+
+
+But volume isn't working =(:
+
+```{r}
+# testing out volume now
+play(note(
+  Ascale, 
+  vol=seq(.1:1, length.out = length(Ascale))
+  )
+)
+```
+
+
+Trying out chords
+```{r}
+a4vec <- note(Ascale[1:6])
+vec2 <- note(Ascale[3:8])
+
+# this is kind of nice when executed together
+# (select both and hit ctrl + Enter)
+play(a4vec)
+play(vec2)
+
+
+# yikes!  no bueno!  be warned, it's terrible.
+play(a4vec+vec2)
+
+```
+
+
+
+# `tuneR` package
+
+
+
+
+
+
+
+
+
+
+
+
+
