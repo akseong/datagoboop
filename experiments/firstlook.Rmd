@@ -56,6 +56,23 @@ gg_color <- function(n) {
 
 
 
+# SIGNAL/PROCESSING ----
+# Apply affine transformation to y so that max(y) = 1 and min(y) = -1
+# We'll need this later to make sure input to play() is valid
+# Anything above +1/below -1 will be clipped, resulting in distortion
+wave_norm <- function(y) {
+  bias = mean(y)
+  y <- y - bias
+  M <- max(y)
+  m <- min(y)
+  scale <- if (M > abs(m)) M else abs(m)
+  y <- y / scale
+  return(y)
+}
+
+
+
+
 # TEXT/TABLE FORMATTING----
 colorize <- function(x, color="red") {
   # text color conditional on latex/html output
@@ -124,15 +141,15 @@ play(s2)
 
 # play together
 plot(c(s1+s2)[1:500], pch=',', main = "wave s1 + s2", col=1)
-play(s1+s2)
+play(wave_norm(s1 + s2))
 
 # 2 sec white noise
 wn <- rnorm(88000, 0, 1)
 plot(wn[1:500], pch=',', col=1)
-play(wn)
+play(wave_norm(wn))
 
 # adding sound wave to white noise --> white noise
-play(s1 + wn)
+play(wave_norm(s1 + wn))
 
 ```
 
