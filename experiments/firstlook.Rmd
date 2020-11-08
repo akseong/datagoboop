@@ -15,7 +15,7 @@ output:
     toc_float:
       collapsed: false
     smooth_scroll: true
-    code_fold: show
+    code_fold: hide
   urlcolor: blue
 ---
   
