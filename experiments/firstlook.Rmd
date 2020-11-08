@@ -259,6 +259,12 @@ for (f in Ascale) {
   y_t <- c(y_t, note(f))
 }
 
+# Maybe another way to do the above that doesn't take so much memory
+#Though there is clipping in this approach
+for(f in Ascale){
+  wait(play(note(f)))
+}
+
 # Play
 play(y_t)
 ```
