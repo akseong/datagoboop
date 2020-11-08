@@ -243,10 +243,10 @@ play(note(49, .1))
 
 ## play an A major scale
 
-_Note;_ Needed to revamp function generating 44k length vector of specified hz because
+_Done:_ Needed to revamp function generating 44k length vector of specified hz because
 
-+ rep() doesn't vectorize well
-+ rep() needs integer-valued arguments
++ rep() didn't vectorize well
++ rep() needed integer-valued arguments
 
 
 ```{r}
@@ -292,6 +292,56 @@ Amin <- wave_norm(note(Ascale[1]) + note(Ascale[3]-1) + note(Ascale[5]))
 play(Amaj)
 play(Amin)
 ```
+
+
+
+# Repitching pre-recorded sounds
+
+To make compelling music, we'll likely need to incorporate pre-recorded sounds, and we would like to be able to adjust the pitch of pre-recorded sounds. The simplest method for doing this is called "re-pitching" or "time stretching." The idea is to speed up or slow down the pre-recorded sounds by a factor necessary to achieve the desire pitch shift.
+
+__Here's a function to do that__ :
+
++ `repitch` takes a single-channel (mono) waveform `y` and shifts it by `shift` semitones (may be positive or negative, or non-integer).
+
+```{r repitch}
+repitch <- function(y, shift) {
+  t_old <- seq(0, 1, length.out = length(y))
+  t_new <- seq(0, 1, length.out = round(length(y) / 2^(shift / 12)))
+  return(approx(t_old, y, t_new)$y)
+}
+```
+
+```{r repitch-example}
+# Load piano and snare sounds
+snr <- load.wave(here::here("sounds", "snare.wav"))
+pC4 <- load.wave(here::here("sounds", "piano_C4.wav"))
+
+# Note that they're stereo sounds (both 2 x N).
+# For simplicity, let's convert to mono (1 x N), but note that we can get a lot of interesting effects with stereo
+# Also, crop the piano sample (it's very long)
+snr <- snr[1, ]
+pC4 <- pC4[1, 1:(44100/2)]
+
+# Sequence of snares increasing in pitch
+snr_seq <- c()
+for (k in 1:13) {
+  snr_seq <- c(snr_seq, repitch(snr, k))
+}
+play(snr_seq)
+
+# Sequence of piano notes decreasing chromatically in pitch
+pno_seq <- c()
+for (k in rev(1:13)) {
+  pno_seq <- c(pno_seq, repitch(pC4, k))
+}
+play(pno_seq)
+```
+
+
+
+# Reverb and filters
+
+Both reverb and filters (high-pass, low-pass, band-pass) can be achieved by convolving the waveform with an appropriate kernel.  In some cases, the processing can be sped up by using the fast Fourier transform (FFT) and working in the frequency domain instead of time domain.  I haven't worked with either inside of R, so no examples yet.
 
 
 
