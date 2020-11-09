@@ -216,9 +216,22 @@ hz_to_1sec <- function(hz, fs = 44100){
   sin(2 * pi * hz * t)
 }
 
-note <- function(pkey, vol=1){
+hz_to_sec <- function(hz, dur = 1, fs = 44100){
+  # Generate time steps spanning 1 seconds
+  # Note that fs is the "sampling frequency" i.e., the number of elements in the vector played over 1 second
+  # For most systems, this is either 44100 Hz or 48000 Hz
+  t <- seq(0, dur, 1/fs)
+  
+  # Return the sine wave
+  sin(2 * pi * hz * t)
+}
+
+note <- function(pkey, vol=1, dur = 1){
+  #cap volume to prevent clipping
+  V = min(abs(c(vol,1)))
+  
   # combines basic funcs to output playable vectors
-  vol*hz_to_1sec(hz = pkey_to_hz(keynum = pkey))
+  V*hz_to_sec(hz = pkey_to_hz(keynum = pkey), dur)
 }
 ```
 
@@ -228,9 +241,9 @@ __Test:__
 
 ```{r play_basic}
 play(
-  hz_to_1sec(pkey_to_hz(49))
+  hz_to_sec(pkey_to_hz(49),0.1)
 )
-play(note(49, 1))
+play(note(49, 1, 0.1))
 play(note(49, .25))
 play(note(49, .1))
 
@@ -256,17 +269,19 @@ Ascale <- c(49, 51, 53, 54, 56, 58, 60, 61)
 # Concatenate the sine waves
 y_t <- c()
 for (f in Ascale) {
-  y_t <- c(y_t, note(f))
-}
-
-# Maybe another way to do the above that doesn't take so much memory
-#Though there is clipping in this approach
-for(f in Ascale){
-  wait(play(note(f)))
+  y_t <- c(y_t, note(f,1,0.3))
 }
 
 # Play
 play(y_t)
+
+# Maybe another way to do the above that doesn't take so much memory
+#Though there is clipping in this approach
+for(f in Ascale){
+  wait(play(note(f,1,0.3))) #Wait will let the current sound finish playing before it starts the next one
+}
+
+
 ```
 
 __Hey, it works!!__
@@ -297,6 +312,22 @@ Amin <- wave_norm(note(Ascale[1]) + note(Ascale[3]-1) + note(Ascale[5]))
 # Play (should be played separately)
 play(Amaj)
 play(Amin)
+
+
+#function to take in notes and output the wave for a chord
+chord <- function(notes, vol = 1, dur = 1){
+  
+  waves = note(notes[1], vol, dur)
+  for(i in 2:length(notes)){
+    waves = waves + note(notes[i], vol, dur)
+  }
+  
+  wave_norm(waves)
+}
+
+Amaj = chord(c(Ascale[1], Ascale[3], Ascale[5]), 1, 0.5)
+play(Amaj)
+
 ```
 
 
