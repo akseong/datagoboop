@@ -546,6 +546,11 @@ play(Ach_strum)
 ```{r knock_knock}
 # Seems clearest, but sounds like a door chime!
 play(rev(Ach))
+ggplot(mtcars) + 
+  geom_histogram(aes(x=mpg), breaks = seq(10, 35, 5), alpha = .2, col=1) + 
+  scale_y_reverse() + 
+  coord_flip() + 
+  labs(title="more like this")
 ```
 
 
@@ -601,6 +606,60 @@ play(rep(wave_norm(arpeg_class), arpeg_times))  # classical version (bottom/top 
 ```
 
 
+
+
+### variation 5: violin audioplot
+
+```{r}
+# map to a scale
+pkeys <- Ascale[1:length(breaks)]
+
+# construct each pitch + duration separately
+wave_ret <- rep(0, wave_length)
+for (i in 1:length(dur_rel)){
+  wave_i <- c(note(pkey = pkeys[i], dur = dur_rel[i]),  # individual note with relative length
+              rep(0, silence_length[i]))                # fill rest of duration with silence
+  wave_ret <- wave_ret + wave_i[1:wave_length]
+}
+
+viol <- wave_norm(c(rev(wave_ret), wave_ret))
+play(viol)
+```
+
+
+
+#### violinplot with more bins:
+
+Just a normal distribution, values mapped to a regular major scale
+
+```{r more_bins}
+y <- rnorm(1000, 40, 5)
+hist_inf <- hist(y, breaks = seq(floor(min(y)), floor(max(y))+1, length.out=16))
+breaks <- hist_inf$mids
+major_scale_intervals <- c(2, 2, 1, 2, 2, 2, 1)
+large_scale <- c(0, 
+           0 + cumsum(major_scale_intervals), 
+           12 + cumsum(major_scale_intervals), 
+           24 + cumsum(major_scale_intervals)) +40
+
+pkeys <- large_scale[1:length(breaks)]
+
+fs <- 44100
+dur <- 5
+wave_length <- dur*fs
+dur_rel <- hist_inf$counts/max(hist_inf$counts) * dur
+silence_length <- wave_length - dur_rel*fs
+
+# construct each pitch + duration separately
+wave_ret <- rep(0, wave_length)
+for (i in 1:length(dur_rel)){
+  wave_i <- c(note(pkey = pkeys[i], dur = dur_rel[i]),  # individual note with relative length
+              rep(0, silence_length[i]))                # fill rest of duration with silence
+  wave_ret <- wave_ret + wave_i[1:wave_length]
+}
+viol2 <- wave_norm(c(rev(wave_ret), wave_ret))
+play(viol2)
+```
 
 
 
