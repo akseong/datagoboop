@@ -233,6 +233,37 @@ note <- function(pkey, vol=1, dur = 1){
   # combines basic funcs to output playable vectors
   V*hz_to_sec(hz = pkey_to_hz(keynum = pkey), dur)
 }
+
+#function to create waves for a sequence of notes
+note_seq <- function(pkey, vol = 1, total_dur = 1){
+  
+  l <- length(pkey)
+  vlength <- length(vol)
+  
+  
+  if( vlength > 1){
+    #Error catching
+    if(vlength != l){
+      stop('if vol is not of length 1, vol must be of the same length as pkey')
+    }
+  }
+  else{
+    vol = rep(vol, l)
+  }
+  
+  #Hard thresholding at 1
+  V = pmin(abs(vol),1)
+  
+  #Concatenating waves
+  ret_wave = V[1]*hz_to_sec(hz = pkey_to_hz(keynum = pkey[1]), total_dur/l)
+  for(i in 2:l){
+    ret_wave = c(ret_wave, V[i]*hz_to_sec(hz = pkey_to_hz(keynum = pkey[i]), total_dur/l))
+  }
+  
+  return(ret_wave)
+}
+
+
 ```
 
 
@@ -386,7 +417,28 @@ Both reverb and filters (high-pass, low-pass, band-pass) can be achieved by conv
 
 
 
+# Translating data into sound
+For our case study we should probably use the mtcars dataset.
 
+## One-dimensional case
+```{r}
+data("mtcars")
+y = mtcars$mpg
+
+hist_inf <- hist(y, plot = FALSE)
+breaks <- hist_inf$mids
+vols <- hist_inf$counts/max(hist_inf$counts)
+
+
+#Using volume as measure of relative requency of breaks
+hist(y)
+play(note_seq(2*breaks, vols, 2))
+
+
+#Using pitch as measures of break counts
+play(note_seq(hist_inf$counts*3, vols, 2))
+
+```
 
 
 
