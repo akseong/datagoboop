@@ -407,6 +407,9 @@ play(pno_seq)
 
 
 
+
+
+
 # Reverb and filters
 
 Both reverb and filters (high-pass, low-pass, band-pass) can be achieved by convolving the waveform with an appropriate kernel.  In some cases, the processing can be sped up by using the fast Fourier transform (FFT) and working in the frequency domain instead of time domain.  I haven't worked with either inside of R, so no examples yet.
@@ -414,6 +417,8 @@ Both reverb and filters (high-pass, low-pass, band-pass) can be achieved by conv
 
 
 # `tuneR` package
+
+
 
 
 
@@ -439,6 +444,192 @@ play(note_seq(2*breaks, vols, 2))
 play(note_seq(hist_inf$counts*3, vols, 2))
 
 ```
+
+
+### exponentiate vols?
+
+Having a hard time hearing the difference in volume.  
++ I'm wondering if human perception of volume is logarithmic to amplitude?
++ lower pitches tend to be harder to pick out at lower volumes.  Not sure how to address this.
+
+
+```{r}
+vols2 <- (2^hist_inf$counts)/(2^max(hist_inf$counts))
+play(note_seq(2*breaks, vols2, 2))
+```
+
+
+
+
+### variation 1: values --> pitch, counts --> duration
+
+```{r counts_duration}
+ggplot(mtcars) + 
+  geom_histogram(aes(x=mpg), breaks = seq(10, 35, 5), alpha = .2, col=1) + 
+  coord_flip() + 
+  labs(title="can we mimic this?")
+
+# I find I can't hear the difference in volume well enough for counts-->volume
+# I do like the counts-->pitch
+# An alternative might be:
+# map break midpoints to pitch
+# map counts to duration
+fs = 44100
+dur <- 5
+breaks <- hist_inf$mids  
+pkeys <- breaks*2  # separate pitches a little
+
+# durations for each note (and silence afterwards)
+wave_length <- dur*fs
+dur_rel <- hist_inf$counts/max(hist_inf$counts) * dur
+silence_length <- wave_length - dur_rel*fs
+
+# construct each pitch + duration separately
+wave_ret <- rep(0, wave_length)
+for (i in 1:length(dur_rel)){
+  wave_i <- c(note(pkey = pkeys[i], dur = dur_rel[i]),  # individual note with relative length
+              rep(0, silence_length[i]))                # fill rest of duration with silence
+  wave_ret <- wave_ret + wave_i[1:wave_length]
+}
+
+chrom <- wave_norm(wave_ret)
+play(chrom)
+```
+
+
+
+```{r strums}
+# strum at each change in the chord
+strums <- dur_rel[order(dur_rel)]
+seps_length <- c(strums[1], diff(strums)) * fs
+Amp <- NULL
+for (i in 1:length(seps_length)){
+  Amp_i <- exp(-6 * (1:seps_length[i])/fs)
+  Amp <- c(Amp, Amp_i)
+}
+
+
+chrom_strum <- wave_norm(Amp*wave_ret)
+play(chrom_strum)
+```
+
+
+
+### variation 2: map to a scale
+
+```{r histogram_in_A_major}
+# map to a scale
+pkeys <- c(Ascale[1],
+           Ascale[3],
+           Ascale[5],
+           Ascale[8],
+           Ascale[8] + 4)
+
+# construct each pitch + duration separately
+wave_ret <- rep(0, wave_length)
+for (i in 1:length(dur_rel)){
+  wave_i <- c(note(pkey = pkeys[i], dur = dur_rel[i]),  # individual note with relative length
+              rep(0, silence_length[i]))                # fill rest of duration with silence
+  wave_ret <- wave_ret + wave_i[1:wave_length]
+}
+
+Ach <- wave_norm(wave_ret) 
+Ach_strum <- wave_norm(Amp*wave_ret)
+play(Ach)
+play(Ach_strum)
+```
+
+
+
+### variation 3: fill in the chord instead
+
+```{r knock_knock}
+# Seems clearest, but sounds like a door chime!
+play(rev(Ach))
+```
+
+
+```{r}
+# I like how this sounds the best... but not as clear
+play(rev(Ach_strum))
+```
+
+
+
+### variation 4: arpeggiate
+
+```{r}
+# arpeggio with different lengths
+fs = 44100
+max_dur <- .5
+pkeys <- hist_inf$mids*2
+
+# durations for each note
+dur_rel <- hist_inf$counts/max(hist_inf$counts) * max_dur
+
+# ascending only
+wave_ret <- NULL
+for (i in 1:length(dur_rel)){
+  wave_i <- note(pkey = pkeys[i], dur = dur_rel[i])  # individual note with relative length
+  wave_ret <- c(wave_ret, wave_i)
+}
+arpeg_asc <- wave_ret
+
+# both ascending and descending with pauses
+arpeg_both <- c(arpeg_asc,
+                rep(0, fs/5),
+                rev(arpeg_asc),
+                rep(0, fs/5))
+
+
+
+# classical arpeg
+dur_both <- c(dur_rel, rev(dur_rel[-c(1, length(dur_rel))]))
+pkeys_both <- c(pkeys, rev(pkeys[-c(1, length(pkeys))]))
+wave_ret <- NULL
+for (i in 1:length(dur_both)){
+  wave_i <- note(pkey = pkeys_both[i], dur = dur_both[i])  # individual note with relative length
+  wave_ret <- c(wave_ret, wave_i)
+}
+arpeg_class <- wave_ret
+
+
+arpeg_times <- 3
+play(rep(wave_norm(arpeg_asc), arpeg_times))    # ascending only
+play(rep(wave_norm(arpeg_both), arpeg_times))   # both ascend/descend
+play(rep(wave_norm(arpeg_class), arpeg_times))  # classical version (bottom/top not repeated)
+```
+
+
+
+
+
+
+
+
+# code wishlist (brainstorming question)
+
++ way to eliminate clicking between sounds
+    + Is this a result of the speaker driver snapping between (relatively) distant positions / can it be smoothed?
+    
++ re-pitch without changing length of sound
+    + easy for simple sound (copy paste to fill vector)
+    + seems harder for more complex sounds
+    
++ functions to map data characteristics to:
+    + pitches
+    + volume
+    + duration/speed
+    + instruments
+    + tempo
+
++ building in a few scales might be nice
+
+
+
+# thoughts/questions
++ what could an audio scatterplot look like?
+
 
 
 
