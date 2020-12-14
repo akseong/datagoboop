@@ -1,0 +1,133 @@
+---
+title: "datagoboop experiment"
+author: "Jaylen Lee"
+date: "11/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(datagoboop)
+dat1 <- data.frame(x = rnorm(1000))
+z <- rbinom(1000,1,0.3)
+dat2 <- data.frame(x = rexp(1000))
+dat3 <- data.frame(x = z*rnorm(1000)+(1-z)*rnorm(1000,5))
+
+z <- rbinom(1000,1,0.5)
+
+x <- rnorm(1000,0, 1+z*5)
+dat4 <- data.frame(x = x, z = z)
+
+x <- rnorm(100)
+y <- 2*x^2+rnorm(100,0,0.2)
+
+dat5 <- data.frame(x = x, y = y)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+wplay(sonify_hist(dat1,x))
+```
+```{r}
+hist(dat1$x)
+```
+
+
+
+```{r}
+wplay(sonify_hist(dat2,x))
+```
+
+
+```{r}
+hist(dat2$x)
+```
+
+
+
+```{r}
+wplay(sonify_hist(dat3,x))
+```
+
+
+```{r}
+hist(dat3$x)
+```
+
+
+
+
+```{r}
+wplay(sonify_box(dat4,x,z, duration = 8))
+```
+
+
+
+
+
+```{r}
+boxplot(x~z, dat4)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+
+wplay(sonify_scatter(dat5, "x", "y",order_var = "x", duration = 1, speed = 12))
+```
+
+
+```{r}
+plot(dat5$x,dat5$y)
+```
+
+

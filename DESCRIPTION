@@ -1,0 +1,35 @@
+Package: datagoboop
+Type: Package
+Title: Data Sonification Tools & Audioplotting Functions
+Version: 0.1.0
+Authors@R: c(
+    person("Arnie", "Seong", , "akseong@uci.edu", c("aut", "cre")),
+    person("Sebastian", "Waz", , role = "aut"),
+    person("Jaylen", "Lee", , role = "aut")
+    )
+Depends:
+    R (>= 3.5.0)
+Maintainer: Arnie Seong <akseong@uci.edu>
+Description: Fundamental tools for mapping data to pitch and other sonic elements,
+    usability of audio elements in RMarkdown workflows, and built-in functions
+    for transforming several common visual plot types to audioplots.  
+License: GPL-3 | file LICENSE
+URL: TBD
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+Imports: 
+    MASS,
+    audio,
+    dplyr,
+    here,
+    htmltools,
+    knitr,
+    purrr,
+    seewave,
+    stats,
+    stringr,
+    utils
+    
