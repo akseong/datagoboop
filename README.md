@@ -7,7 +7,9 @@ The data. It goes boop now.
 
 ## Installation
 
-TBA
+In the R console, run:
+
+`devtools::install_github("akseong/datagoboop")`
 
 ## Usage
 You can use `datagoboop` in two ways. Either use the provided functions to create an audio summary of your data, or use it as a framework to make R output sounds.
