@@ -6,7 +6,7 @@
 #'
 #' @return html audio tag
 #' @export
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' html_tag_audio("foo")
