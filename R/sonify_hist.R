@@ -19,49 +19,49 @@
 #' @examples
 #' \dontrun{
 #' dat <- data.frame(x = rnorm(100))
-#' wplay(sonify_hist(dat,x))
+#' wplay(sonify_hist(dat, x))
 #' }
-sonify_hist <- function(data, 
-                        var, 
-                        breaks = "Sturges", 
-                        tonic = 40, 
-                        inst = "sine", 
+sonify_hist <- function(data,
+                        var,
+                        breaks = "Sturges",
+                        tonic = 40,
+                        inst = "sine",
                         duration = 2,
                         volume = 0.75,
-                        fs = 44100){
-  
-  #Reading in data
-  x <- data %>% 
-    select({{var}}) %>% 
+                        fs = 44100) {
+
+  # Reading in data
+  x <- data %>%
+    select({{ var }}) %>%
     as_vector()
-  
-  
-  #Creating the number of breaks for the histogram. Current standard is a multiple of 4.
-  if(breaks == "Sturges"){
-    n_breaks = ceiling(log2(length(x)) + 1)
-    n_breaks = n_breaks + (4 - n_breaks %% 4) + 1
-  } else{
-    n_breaks = breaks
+
+
+  # Creating the number of breaks for the histogram. Current standard is a multiple of 4.
+  if (breaks == "Sturges") {
+    n_breaks <- ceiling(log2(length(x)) + 1)
+    n_breaks <- n_breaks + (4 - n_breaks %% 4) + 1
+  } else {
+    n_breaks <- breaks
   }
-  
-  #Making histogram
-  heights <- hist(x, 
-                  breaks = seq(min(x),max(x)+IQR(x, na.rm = TRUE)/n_breaks, length = n_breaks),
-                  right = FALSE, 
-                  plot = FALSE)$counts
-  
-  #Set up
+
+  # Making histogram
+  heights <- hist(x,
+    breaks = seq(min(x), max(x) + IQR(x, na.rm = TRUE) / n_breaks, length = n_breaks),
+    right = FALSE,
+    plot = FALSE
+  )$counts
+
+  # Set up
   pkeys <- scale_num(heights, tonic)
-  wave_length <- duration*fs
-  
-  #Creating Sounds
-  height_notes <- notes(pkeys, dur = duration/n_breaks, fs = fs, inst_lab = inst)
-  
-  #4 beat metronome
-  snares <- create_count(duration,fs)
-  
-  #Adding together
-  wave_out <- volume*wave_norm(height_notes+snares)
+  wave_length <- duration * fs
+
+  # Creating Sounds
+  height_notes <- notes(pkeys, dur = duration / n_breaks, fs = fs, inst_lab = inst)
+
+  # 4 beat metronome
+  snares <- create_count(duration, fs)
+
+  # Adding together
+  wave_out <- volume * wave_norm(height_notes + snares)
   return(wave_out)
 }
-
