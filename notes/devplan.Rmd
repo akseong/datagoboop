@@ -1,0 +1,35 @@
+---
+title: "Dev Notes"
+author: "Jaylen Lee, Arnie Seong, Sebastian Waz"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  html_document:
+    df_print: paged
+    theme: flatly
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    code_fold: hide
+urlcolor: blue
+---
+
+# Current goals: 
+
+
+
+
+
+
+
+
+
+# Future goals / milestones:
+
+
+
+
+
+
