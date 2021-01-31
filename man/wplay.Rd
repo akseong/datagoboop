@@ -43,7 +43,7 @@ wplay_tail(
 \arguments{
 \item{y}{either a n_samples length vector or a 2xn_samples matrix}
 
-\item{vol}{numeric in [0, 1]: playback volume (default 0.25)}
+\item{vol}{numeric in [0, 1]: playback volume (default 0.5)}
 
 \item{normalize}{logical: if \code{TRUE} (default) audio is normalized before playback.}
 
@@ -57,7 +57,7 @@ wplay_tail(
 
 \item{wplay_controls}{logical: if \code{TRUE} the audio is played using in-console controls.  If \code{FALSE} places system in sleep during playback.}
 
-\item{n_bad}{integer: number of invalid responses to console prompts before stopping.}
+\item{eval_entry}{logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop)}
 
 \item{n_sec}{numeric: number of seconds to play from beginning or end}
 }
@@ -73,6 +73,7 @@ playback with system wait (default) or console controls.  When knitting .Rmd fil
 \item \code{file_path}: if unspecified, creates folder with same name as current .Rmd file and saves audio file using [timestamp].[\code{file_type}] as the filename.
 \item \code{wplayback} can be set in parent environment / in console, i.e. can toggle audio playback on/off by creating a new variable \code{wplayback <- TRUE} or \code{FALSE}.   Useful when sourcing file / running all lines before, et cetera.
 \item \code{wplay_controls} can be set in parent environment / in console.
+\item \code{eval_entry} can be set in parent environment / in console.
 }
 }
 \section{Functions}{
