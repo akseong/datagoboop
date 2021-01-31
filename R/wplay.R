@@ -3,14 +3,14 @@
 #' @description playback with system wait (default) or console controls.  When knitting .Rmd file to html, saves audio as .wav file and places html audio player in document.
 #'
 #' @param y either a n_samples length vector or a 2xn_samples matrix
-#' @param vol numeric in \[0, 1\]: playback volume (default 0.25)
+#' @param vol numeric in \[0, 1\]: playback volume (default 0.5)
 #' @param normalize logical: if `TRUE` (default) audio is normalized before playback.
 #' @param fs integer: playback sampling rate (user system-dependent; typically 44100 or 48000)
 #' @param file_path string: location/filename to save audio file when knitting to an html document
 #' @param file_type string: file type of local copy when knitting html document (wav/mp3)
 #' @param wplayback logical: if `TRUE` the audio is played.
 #' @param wplay_controls logical: if `TRUE` the audio is played using in-console controls.  If `FALSE` places system in sleep during playback.
-#' @param n_bad integer: number of invalid responses to console prompts before stopping.
+#' @param eval_entry logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop)}
 #' @param n_sec numeric: number of seconds to play from beginning or end
 #'
 #' @md
@@ -19,6 +19,7 @@
 #'   + \code{file_path}: if unspecified, creates folder with same name as current .Rmd file and saves audio file using \[timestamp\].\[\code{file_type}\] as the filename.
 #'   + \code{wplayback} can be set in parent environment / in console, i.e. can toggle audio playback on/off by creating a new variable \code{wplayback <- TRUE} or \code{FALSE}.   Useful when sourcing file / running all lines before, et cetera.
 #'   + \code{wplay_controls} can be set in parent environment / in console.
+#'   + \code{eval_entry} can be set in parent environment / in console.
 #'
 #' @return If called from script or in console, plays audio.  If knitting .Rmd document to html, saves sound file and inserts html audio tags into document
 #' @export
