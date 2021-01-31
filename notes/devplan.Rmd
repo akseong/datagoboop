@@ -21,6 +21,7 @@ urlcolor: blue
 Closed issues in commits to dev:
 
 + #3 (`progbar` options)
++ #4 ('bach()' varnames/comments)
 + #14 (add planning document --- __yer lookin' at it!__)
 + #15 (`devtools::check()` notes) 
     - fixed progress bar namespace/import issues
