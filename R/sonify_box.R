@@ -10,6 +10,7 @@
 #' @return 2xn_samples matrix for playback.
 #' @export
 #' @importFrom grDevices boxplot.stats
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @examples
 #' \dontrun{

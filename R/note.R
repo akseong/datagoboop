@@ -11,6 +11,8 @@
 #' @param progbar logical: display progress bar (default: \code{TRUE})
 #'
 #' @return dur*fs length numeric vector
+#' 
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #'
 #' @examples
