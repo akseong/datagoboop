@@ -3,6 +3,7 @@
 #' @title A sonified version of a QQ plot.
 #' @description short summary
 #' @inheritParams sonify_studres
+#' @param progbar logical: if \code{TRUE} progress bar enabled
 #'
 #' @return A 2 x n matrix representing the sound to be played through each ear. Note that each tone is an observation/quantile, and tones that sound panned to the left are above the \code{y = x} line, and tones that sound panned to the right are below the \code{y = x} line.
 #' @export
@@ -18,7 +19,7 @@
 #' # Play the QQ plot for this model fit
 #' wplay(sonify_qq(mod))
 #' }
-sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE) {
+sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = progbar) {
   #  Sounds that appear in the left ear are on the
   # positive side of the x=y line, sounds that appear in the right ear on the negative
   # side of the x=y line. Sounds that appear in the center are near to the x=y line.
@@ -80,8 +81,8 @@ sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE) {
   qq_notes_r <- qq_notes
   qq_notes_l[binned < ii] <- NA
   qq_notes_r[binned > ii] <- NA
-  w_qq_l <- notes(qq_notes_l, dur = 0.25, inst_lab = "piano")
-  w_qq_r <- notes(qq_notes_r, dur = 0.25, inst_lab = "piano")
+  w_qq_l <- notes(qq_notes_l, dur = 0.25, inst_lab = "piano", progbar = progbar)
+  w_qq_r <- notes(qq_notes_r, dur = 0.25, inst_lab = "piano", progbar = progbar)
 
   # Generate a tonic sequence to provide a reference for the x=y line
   w_i <- note(tonic_pkey - 12, vol = 0.5, dur = 0.25, inst_lab = "piano")
