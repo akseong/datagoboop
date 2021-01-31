@@ -10,7 +10,7 @@
 #' @param file_type string: file type of local copy when knitting html document (wav/mp3)
 #' @param wplayback logical: if `TRUE` the audio is played.
 #' @param wplay_controls logical: if `TRUE` the audio is played using in-console controls.  If `FALSE` places system in sleep during playback.
-#' @param eval_entry logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop)}
+#' @param eval_entry logical: if `TRUE` and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop).
 #' @param n_sec numeric: number of seconds to play from beginning or end
 #'
 #' @md

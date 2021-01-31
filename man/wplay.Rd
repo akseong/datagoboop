@@ -9,20 +9,21 @@
 \usage{
 wplay(
   y,
-  vol = 0.25,
+  vol = 0.5,
   normalize = TRUE,
   fs = 44100,
   file_path = NULL,
   file_type = "wav",
   wplayback,
-  wplay_controls
+  wplay_controls,
+  eval_entry
 )
 
-cplay(y, vol = 0.25, normalize = TRUE, fs = 44100, n_bad = 5)
+cplay(y, vol = 0.5, normalize = TRUE, fs = 44100, eval_entry)
 
 wplay_head(
   y,
-  vol = 0.25,
+  vol = 0.5,
   n_sec = 3,
   normalize = TRUE,
   fs = 44100,
@@ -32,7 +33,7 @@ wplay_head(
 
 wplay_tail(
   y,
-  vol = 0.25,
+  vol = 0.5,
   n_sec = 3,
   normalize = TRUE,
   fs = 44100,
@@ -57,7 +58,7 @@ wplay_tail(
 
 \item{wplay_controls}{logical: if \code{TRUE} the audio is played using in-console controls.  If \code{FALSE} places system in sleep during playback.}
 
-\item{eval_entry}{logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop)}
+\item{eval_entry}{logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop).}
 
 \item{n_sec}{numeric: number of seconds to play from beginning or end}
 }
@@ -86,23 +87,30 @@ playback with system wait (default) or console controls.  When knitting .Rmd fil
 }}
 
 \examples{
-\dontrun{
-x <- sin(1:100000/(3*pi))
+\dontshow{
+wplayback <- FALSE
+}
+x <- sin(1:100000 / (3 * pi))
 wplay(x)
 
 # two notes
-y <- sin(1:100000/(5*pi))
+y <- sin(1:100000 / (5 * pi))
 wplay(x + y)
 
 # no playback
 wplay(x + y, wplayback = FALSE)
-wplayback = FALSE
+wplayback <- FALSE
 wplay(x)
 
-# use parent environment to toggle console playback controls 
-wplayback = TRUE
-wplay_controls = TRUE
-z <- sin(1:441000/(3*pi))  # playback takes 10 seconds.  Use console controls to stop.
-wplay(z)
+# use parent environment to toggle console playback controls
+wplayback <- TRUE
+\dontshow{
+wplayback <- FALSE
 }
+wplay_controls <- TRUE
+\dontshow{
+wplay_controls <- FALSE
+}
+z <- sin(1:441000 / (3 * pi)) # playback takes 10 seconds.  Use console controls to stop.
+wplay(z)
 }

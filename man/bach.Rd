@@ -11,7 +11,8 @@ bach(
   decay = FALSE,
   decay_rate = -1,
   want_df = FALSE,
-  stereo = FALSE
+  stereo = FALSE,
+  progbar = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ bach(
 \item{want_df}{logical: if \code{TRUE} returns data frame in long format (default: \code{FALSE})}
 
 \item{stereo}{logical: if \code{TRUE} returns stereo output, separating notes by hand (default = \code{FALSE})}
+
+\item{progbar}{logical: if \code{TRUE} progress bar enabled}
 }
 \value{
 vector or matrix
@@ -37,7 +40,7 @@ Generates playable vector of the first half of Prelude 2 (BWV 871) from The Well
 }
 \examples{
 \dontrun{
-wplay_controls = TRUE
+wplay_controls <- TRUE
 wplay(bach(decay = TRUE))
 }
 }

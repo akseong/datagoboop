@@ -30,7 +30,9 @@ Synthesize tones using parameters to specify envelope, relative amplitude of har
 \examples{
 \dontrun{
 # Specify the parameters by hand for a 360 Hz complex tone with linear decay
-w <- resynth(hz = 360, dur = 1, env = c(1, 0), amp = rev(seq(0, 1, length.out = 6)), phi = rep(0, 6))
+w <- resynth(hz = 360, dur = 1, env = c(1, 0), 
+             amp = rev(seq(0, 1, length.out = 6)), 
+             phi = rep(0, 6))
 
 # Play it out loud
 wplay(w)

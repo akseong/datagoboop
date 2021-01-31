@@ -89,7 +89,7 @@ notes <- function(pkey, vol = 1, dur = 1, fs = 44100, inst_lab = "sine", decay =
 
   # initialize progress bar
   if (pb_needed) {
-    pb <- txtProgressBar(min = 0, max = n_keys, style = 3, title = progbar_title)
+    pb <- txtProgressBar(min = 0, max = n_keys, style = 3)
   }
   for (i in 1:n_keys) {
     wave_ret[(st_end[i] + 1):(st_end[i + 1])] <- note(

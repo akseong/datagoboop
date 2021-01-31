@@ -61,7 +61,7 @@ sonify_box <- function(data,
   }
 
   # Initializing progress bar
-  if (progbar) {pb <- txtProgressBar(min = 0, max = k, style = 3, title = progbar_title)}
+  if (progbar) {pb <- txtProgressBar(min = 0, max = k, style = 3)}
 
 
   # Creating the boxplot

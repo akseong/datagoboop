@@ -44,7 +44,7 @@ Generates piano key designations for (ascending) scale at specified tonic and nu
 
 \examples{
 \dontrun{
-x <- major_scale(49) 
-wplay(notes(x, dur = 1/8))
+x <- major_scale(49)
+wplay(notes(x, dur = 1 / 8))
 }
 }

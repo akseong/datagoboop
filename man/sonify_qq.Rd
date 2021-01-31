@@ -4,7 +4,7 @@
 \alias{sonify_qq}
 \title{A sonified version of a QQ plot.}
 \usage{
-sonify_qq(lm_obj, tonic_pkey = 34, show_plot = FALSE)
+sonify_qq(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = progbar)
 }
 \arguments{
 \item{lm_obj}{lm object returned by base R's \code{lm} function}
@@ -12,6 +12,8 @@ sonify_qq(lm_obj, tonic_pkey = 34, show_plot = FALSE)
 \item{tonic_pkey}{integer: the piano key of the tonic note used in the sonification. Both sonifications rely on a major scale.}
 
 \item{show_plot}{boolean: whether or not a rudimentary plot of the sonification should also be shown. Default: FALSE.}
+
+\item{progbar}{logical: if \code{TRUE} progress bar enabled}
 }
 \value{
 A 2 x n matrix representing the sound to be played through each ear. Note that each tone is an observation/quantile, and tones that sound panned to the left are above the \code{y = x} line, and tones that sound panned to the right are below the \code{y = x} line.
