@@ -5,6 +5,7 @@
 #' @param inst_lab string: instrument used (default:\code{"piano"}).
 #' @param want_df logical: if \code{TRUE} returns data frame in long format (default: \code{FALSE})
 #' @param stereo logical: if \code{TRUE} returns stereo output, separating notes by hand (default = \code{FALSE})
+#' @param progbar logical: if \code{TRUE} progress bar enabled
 #'
 #' @inheritParams note
 #' @return vector or matrix
@@ -15,7 +16,7 @@
 #' wplay_controls <- TRUE
 #' wplay(bach(decay = TRUE))
 #' }
-bach <- function(spd = 6, fs = 44100, inst_lab = "piano", decay = FALSE, decay_rate = -1, want_df = FALSE, stereo = FALSE) {
+bach <- function(spd = 6, fs = 44100, inst_lab = "piano", decay = FALSE, decay_rate = -1, want_df = FALSE, stereo = FALSE, progbar = TRUE) {
   # right-hand piano keys (main thread)
   RH1 <- c(
     NA, 47, 45, 47, 48, 45, 43, 45, 47, 43, 42, 43, 45, 42, 40, 42,
@@ -89,11 +90,11 @@ bach <- function(spd = 6, fs = 44100, inst_lab = "piano", decay = FALSE, decay_r
   )
 
   # make notes
-  R1 <- notes(pkey = RH1, dur = Rd1 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate)
-  R2 <- notes(pkey = RH2, dur = Rd2 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate)
-  R3 <- notes(pkey = RH3, dur = Rd3 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate)
+  R1 <- notes(pkey = RH1, dur = Rd1 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate, progbar = progbar)
+  R2 <- notes(pkey = RH2, dur = Rd2 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate, progbar = progbar)
+  R3 <- notes(pkey = RH3, dur = Rd3 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate, progbar = progbar)
 
-  L <- notes(pkey = LH1, dur = Ld1 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate)
+  L <- notes(pkey = LH1, dur = Ld1 / spd, fs = fs, inst_lab = inst_lab, decay = decay, decay_rate = decay_rate, progbar = progbar)
 
   # length discrepancy
   len <- min(length(R1), length(R2), length(R3), length(L))

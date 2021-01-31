@@ -21,6 +21,7 @@
 #' @param verbose logical: if \code{TRUE}, generates messages indicating variable mappings and transformations
 #' @param stereo logical: if \code{TRUE}, generates stereo output, with \code{x_var} on left ear and \code{y_var} on right.
 #' @param under_hood logical: if \code{TRUE}, returns list containing mappings used to construct output (wave vector/matrix is first element)
+#' @param progbar logical: if \code{TRUE} progress bar enabled
 #' @inheritParams note
 #'
 #' @return numeric vector: playable audio scatterplot
@@ -79,7 +80,8 @@ sonify_scatter <- function(data, x_var, y_var, # need to be specified
                            fs = 44100,
                            verbose = TRUE,
                            stereo = FALSE,
-                           under_hood = FALSE) {
+                           under_hood = FALSE,
+                           progbar = TRUE) {
   # audio scatterplot
   # x_var, y_var values are binned and mapped to pitches
   # tonic_x, tonic_y:  first note of scale used
@@ -288,7 +290,8 @@ sonify_scatter <- function(data, x_var, y_var, # need to be specified
     vol = .75 * vol[ord_inds],
     dur = (dur[ord_inds] / speed),
     fs = fs,
-    inst_lab = x_inst
+    inst_lab = x_inst,
+    progbar = progbar
   )
 
   y_notes <- notes(
@@ -296,7 +299,9 @@ sonify_scatter <- function(data, x_var, y_var, # need to be specified
     vol = vol[ord_inds],
     dur = (dur[ord_inds] / speed),
     fs = fs,
-    inst_lab = y_inst[ord_inds]
+    inst_lab = y_inst[ord_inds],
+    progbar = progbar
+    
   )
 
   if (stereo) {
