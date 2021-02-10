@@ -3,14 +3,14 @@
 #' @description playback with system wait (default) or console controls.  When knitting .Rmd file to html, saves audio as .wav file and places html audio player in document.
 #'
 #' @param y either a n_samples length vector or a 2xn_samples matrix
-#' @param vol numeric in \[0, 1\]: playback volume (default 0.25)
+#' @param vol numeric in \[0, 1\]: playback volume (default 0.5)
 #' @param normalize logical: if `TRUE` (default) audio is normalized before playback.
 #' @param fs integer: playback sampling rate (user system-dependent; typically 44100 or 48000)
 #' @param file_path string: location/filename to save audio file when knitting to an html document
 #' @param file_type string: file type of local copy when knitting html document (wav/mp3)
 #' @param wplayback logical: if `TRUE` the audio is played.
 #' @param wplay_controls logical: if `TRUE` the audio is played using in-console controls.  If `FALSE` places system in sleep during playback.
-#' @param n_bad integer: number of invalid responses to console prompts before stopping.
+#' @param eval_entry logical: if `TRUE` and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop).
 #' @param n_sec numeric: number of seconds to play from beginning or end
 #'
 #' @md
@@ -19,6 +19,7 @@
 #'   + \code{file_path}: if unspecified, creates folder with same name as current .Rmd file and saves audio file using \[timestamp\].\[\code{file_type}\] as the filename.
 #'   + \code{wplayback} can be set in parent environment / in console, i.e. can toggle audio playback on/off by creating a new variable \code{wplayback <- TRUE} or \code{FALSE}.   Useful when sourcing file / running all lines before, et cetera.
 #'   + \code{wplay_controls} can be set in parent environment / in console.
+#'   + \code{eval_entry} can be set in parent environment / in console.
 #'
 #' @return If called from script or in console, plays audio.  If knitting .Rmd document to html, saves sound file and inserts html audio tags into document
 #' @export
@@ -51,11 +52,12 @@
 #' }
 #' z <- sin(1:441000 / (3 * pi)) # playback takes 10 seconds.  Use console controls to stop.
 #' wplay(z)
-wplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100,
+wplay <- function(y, vol = 0.5, normalize = TRUE, fs = 44100,
                   file_path = NULL,
                   file_type = "wav",
                   wplayback,
-                  wplay_controls) {
+                  wplay_controls,
+                  eval_entry) {
 
   # if wplayback not defined as argument, function looks for wplayback in parent frame
   # if can't find in parent frame, wplayback set to TRUE
@@ -89,6 +91,20 @@ wplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100,
     }
   }
 
+  if (missing(eval_entry)) {
+    par_envir <- parent.frame()
+    
+    if ("eval_entry" %in% ls(par_envir)) {
+      eval_entry <- par_envir$eval_entry
+      message(paste0(
+        "eval_entry declared to be ",
+        eval_entry,
+        " in parent environment \n"
+      ))
+    } else {
+      eval_entry <- FALSE
+    }
+  }
   if (normalize) y <- wave_norm(y)
 
   # vol = 0.25 by default to protect your ears.
@@ -133,7 +149,13 @@ wplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100,
     html_tag_audio(file_path = file_path)
   } else if (wplayback) {
     if (wplay_controls) {
-      cplay(y = y, vol = 1, normalize = FALSE, fs = fs)
+      cplay(
+        y = y, 
+        vol = vol, 
+        normalize = FALSE, 
+        fs = fs, 
+        eval_entry = eval_entry
+      )
     } else {
       audio::wait(audio::play(y, rate = fs))
     }
@@ -145,9 +167,25 @@ wplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100,
 
 #' @describeIn wplay Audio playback with console controls (type "p" to pause, "r" to resume, "s" to stop).
 #' @export
-cplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100, n_bad = 5) {
+cplay <- function(y, vol = 0.5, normalize = TRUE, fs = 44100, eval_entry) {
   # implements playback controls inside console
-
+  
+  # check for eval_entry in parent environment
+  if (missing(eval_entry)) {
+    par_envir <- parent.frame()
+    
+    if ("eval_entry" %in% ls(par_envir)) {
+      eval_entry <- par_envir$eval_entry
+      message(paste0(
+        "eval_entry declared to be ",
+        eval_entry,
+        " in parent environment \n"
+      ))
+    } else {
+      eval_entry <- FALSE
+    }
+  }
+  
   # Normalize the input by default
   if (normalize) {
     y <- wave_norm(y)
@@ -160,74 +198,77 @@ cplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100, n_bad = 5) {
     stop("vol must be between 0 and 1.")
   }
 
-
   t_left <- length(y) / fs # remaining time (in seconds)
   if (is.matrix(y)) {
     t_left <- t_left / min(dim(y)) # assumes # channels (i.e. stereo = 2) lower than length
   }
+  
+  if (eval_entry){
+    cat(paste0(
+      "\033[0;1;36m",
+      "Entries other than 'p' or 's' will be executed in the global environment (single line only)",
+      "\033[0m","\n"))
+  } else {
+    message("Entries other than 'p' or 's' will stop playback")
+  }
+  
   key <- NULL
   playing <- TRUE
-
-  t_st <- Sys.time() # start time
+  
   out <- audio::play(y, rate = fs) # start playing sound
-  message("press 's' + [Enter] to exit/stop playback at any time.")
-  n_badkeys <- 0 # panic button.  counts number invalid inputs before stops playback
+  t_st <- Sys.time() # start time
 
   while (t_left > 0) {
-    if (n_badkeys >= n_bad) {
-      message("panic button hit: invalid entries > ", n_bad - 1, "; playback/prompts stopped")
-      t_left <- -1
-      next
-    }
-
-
-    # options to pause and stop (playing = TRUE)
-    if (playing & t_left > 0) {
-      key <- readline("'p' + [Enter] to pause, 's' + [Enter] to stop:  ")
-      if (key == "p") {
-        audio::pause(out)
-        playing <- FALSE # toggles looking for "r" instead of "p"
+    key <- readline("'p' + [Enter] to pause/resume, s' + [Enter] to stop:  ")
+    if (key != "p"){
+      # while loop stop condition
+      t_left <- -1   
+    } else if (key == "p") {
+      # pause/resume
+      if (playing){
+        # pause
         t_now <- Sys.time()
+        audio::pause(out)
         t_left <- t_left - difftime(t_now, t_st, units = "secs") # increment to stop
         if (t_left > 0) {
           print(paste0(round(t_left, 2), " sec remaining"))
         }
-      } else if (key == "s") {
-        print("playback stopped")
-        audio::close.audioInstance(out)
-        t_left <- -1 # stops while loop
+        playing <- FALSE
       } else {
-        n_badkeys <- n_badkeys + 1 # increment to stopping condition
-      }
-      next
-    }
-
-    # options to resume (playing = FALSE) and stop
-    if (!playing & t_left > 0) {
-      key <- readline("'r' + [Enter] to resume, 's' + [Enter] to stop:  ")
-      if (key == "r") {
+        #resume
         audio::resume(out)
-        playing <- TRUE
         t_st <- Sys.time()
-      } else if (key == "s") {
-        audio::close.audioInstance(out)
-        print("playback stopped")
-        t_left <- -1 # stopping condition
-      } else {
-        n_badkeys <- n_badkeys + 1 # increment to stopping condition
+        playing <- TRUE
       }
-      next
-    }
+    } 
   }
   audio::close.audioInstance(out)
-  if (key != "s") print("finished")
+  if (t_left == -1){
+    print("playback stopped")  
+  } else {
+    print("playback finished")
+  }
+  
+  if (key != "s" & key !="p" & eval_entry) {
+    # evaluate readline input
+    cat(paste0(
+      "Input ",
+      "\033[0;1;36m",
+      "'", key, "'",
+      "\033[0m",
+      "executed in global environment",
+      "\n"))
+    eval(parse(text=key), envir=.GlobalEnv)        
+  }
 }
+
+
 
 
 
 #' @describeIn wplay Plays the first n_sec seconds of y
 #' @export
-wplay_head <- function(y, vol = 0.25, n_sec = 3,
+wplay_head <- function(y, vol = 0.5, n_sec = 3,
                        normalize = TRUE, fs = 44100,
                        file_path = NULL,
                        file_type = "wav") {
@@ -245,7 +286,7 @@ wplay_head <- function(y, vol = 0.25, n_sec = 3,
 
 #' @describeIn wplay Plays the last n_sec seconds of y
 #' @export
-wplay_tail <- function(y, vol = 0.25, n_sec = 3,
+wplay_tail <- function(y, vol = 0.5, n_sec = 3,
                        normalize = TRUE, fs = 44100,
                        file_path = NULL,
                        file_type = "wav") {

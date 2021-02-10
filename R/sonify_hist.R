@@ -10,6 +10,7 @@
 #' @param duration int: the length of playback in seconds
 #' @param volume numeric between 0 and 1: the relative volume of playback
 #' @param fs int: The sampling rate for playback
+#' @param progbar logical: if \code{TRUE} progress bar enabled
 #'
 #' @return numeric vector representing the waveform of the sonified histogram
 #' @export
@@ -28,7 +29,8 @@ sonify_hist <- function(data,
                         inst = "sine",
                         duration = 2,
                         volume = 0.75,
-                        fs = 44100) {
+                        fs = 44100,
+                        progbar=TRUE) {
 
   # Reading in data
   x <- data %>%
@@ -56,7 +58,7 @@ sonify_hist <- function(data,
   wave_length <- duration * fs
 
   # Creating Sounds
-  height_notes <- notes(pkeys, dur = duration / n_breaks, fs = fs, inst_lab = inst)
+  height_notes <- notes(pkeys, dur = duration / n_breaks, fs = fs, inst_lab = inst, progbar = progbar)
 
   # 4 beat metronome
   snares <- create_count(duration, fs)

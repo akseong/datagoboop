@@ -17,7 +17,8 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #'
 #' @examples
 #' \dontrun{
-#' # Generate a 250 Hz sawtooth wave and save it in the local folder using the save.wave() function from library(audio)
+#' # Generate a 250 Hz sawtooth wave and save it in the local folder
+#' # using the save.wave() function from library(audio)
 #' fs <- 44100
 #' f0 <- 250
 #' dur <- 2
@@ -25,7 +26,8 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #' sawtooth <- 2 * ((250 * t) %% 1) - 1
 #' audio::save.wave(what = sawtooth, where = here::here("example.wav"))
 #'
-#' # Open the newly saved sound file and use it to specify a new synthesizer sound under the label "saw".
+#' # Open the newly saved sound file and use it to specify 
+#' # a new synthesizer sound under the label "saw".
 #' add_inst(here::here("example.wav"), f0 = f0, fs = fs, inst_lab = "saw")
 #'
 #' # Use the newly generated sound in a short melody

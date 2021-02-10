@@ -1,0 +1,41 @@
+---
+title: "Dev Notes"
+author: "Jaylen Lee, Arnie Seong, Sebastian Waz"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  html_document:
+    df_print: paged
+    theme: flatly
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    code_fold: hide
+urlcolor: blue
+---
+
+# Current goals: 
+
+Closed issues in commits to dev:
+
++ #3 (`progbar` options)
++ #4 ('bach()' varnames/comments)
++ #14 (add planning document --- __yer lookin' at it!__)
++ #15 (`devtools::check()` notes) 
+    - fixed progress bar namespace/import issues
+    - outstanding: "nonstandard files/directories" note
+
+
+
+
+
+
+# Future goals / milestones:
+
+
+
+
+
+

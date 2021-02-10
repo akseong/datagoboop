@@ -10,6 +10,7 @@
 #' @return 2xn_samples matrix for playback.
 #' @export
 #' @importFrom grDevices boxplot.stats
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @examples
 #' \dontrun{
@@ -23,7 +24,8 @@ sonify_box <- function(data,
                        duration = NULL,
                        phase_speed = 0.5,
                        volume = 0.75,
-                       fs = 44100) {
+                       fs = 44100,
+                       progbar=TRUE) {
 
   # Summarizing the data
 
@@ -59,7 +61,7 @@ sonify_box <- function(data,
   }
 
   # Initializing progress bar
-  pb <- txtProgressBar(min = 0, max = k, style = 3, title = progbar_title)
+  if (progbar) {pb <- txtProgressBar(min = 0, max = k, style = 3)}
 
 
   # Creating the boxplot
@@ -95,7 +97,7 @@ sonify_box <- function(data,
         )
       )
 
-    setTxtProgressBar(pb, i)
+    if (progbar) {setTxtProgressBar(pb, i)}
   }
   wave_out <- wave_norm(rbind(l_wave, r_wave))
   return(volume * wave_out)

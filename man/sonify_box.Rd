@@ -12,7 +12,8 @@ sonify_box(
   duration = NULL,
   phase_speed = 0.5,
   volume = 0.75,
-  fs = 44100
+  fs = 44100,
+  progbar = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ sonify_box(
 \item{volume}{numeric between 0 and 1: the relative volume of playback}
 
 \item{fs}{int: The sampling rate for playback}
+
+\item{progbar}{logical: if \code{TRUE} progress bar enabled}
 }
 \value{
 2xn_samples matrix for playback.
@@ -42,6 +45,6 @@ You can compare distributions by comparing the range of pitches being traveled.
 \examples{
 \dontrun{
 dat <- data.frame(x = rnorm(100))
-wplay(sonify_box(dat,x))
+wplay(sonify_box(dat, x))
 }
 }

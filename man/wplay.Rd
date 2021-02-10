@@ -9,20 +9,21 @@
 \usage{
 wplay(
   y,
-  vol = 0.25,
+  vol = 0.5,
   normalize = TRUE,
   fs = 44100,
   file_path = NULL,
   file_type = "wav",
   wplayback,
-  wplay_controls
+  wplay_controls,
+  eval_entry
 )
 
-cplay(y, vol = 0.25, normalize = TRUE, fs = 44100, n_bad = 5)
+cplay(y, vol = 0.5, normalize = TRUE, fs = 44100, eval_entry)
 
 wplay_head(
   y,
-  vol = 0.25,
+  vol = 0.5,
   n_sec = 3,
   normalize = TRUE,
   fs = 44100,
@@ -32,7 +33,7 @@ wplay_head(
 
 wplay_tail(
   y,
-  vol = 0.25,
+  vol = 0.5,
   n_sec = 3,
   normalize = TRUE,
   fs = 44100,
@@ -43,7 +44,7 @@ wplay_tail(
 \arguments{
 \item{y}{either a n_samples length vector or a 2xn_samples matrix}
 
-\item{vol}{numeric in [0, 1]: playback volume (default 0.25)}
+\item{vol}{numeric in [0, 1]: playback volume (default 0.5)}
 
 \item{normalize}{logical: if \code{TRUE} (default) audio is normalized before playback.}
 
@@ -57,7 +58,7 @@ wplay_tail(
 
 \item{wplay_controls}{logical: if \code{TRUE} the audio is played using in-console controls.  If \code{FALSE} places system in sleep during playback.}
 
-\item{n_bad}{integer: number of invalid responses to console prompts before stopping.}
+\item{eval_entry}{logical: if \code{TRUE} and console controls active, executes console input other than 'p' (pause/resume) or 's' (stop).}
 
 \item{n_sec}{numeric: number of seconds to play from beginning or end}
 }
@@ -73,6 +74,7 @@ playback with system wait (default) or console controls.  When knitting .Rmd fil
 \item \code{file_path}: if unspecified, creates folder with same name as current .Rmd file and saves audio file using [timestamp].[\code{file_type}] as the filename.
 \item \code{wplayback} can be set in parent environment / in console, i.e. can toggle audio playback on/off by creating a new variable \code{wplayback <- TRUE} or \code{FALSE}.   Useful when sourcing file / running all lines before, et cetera.
 \item \code{wplay_controls} can be set in parent environment / in console.
+\item \code{eval_entry} can be set in parent environment / in console.
 }
 }
 \section{Functions}{
@@ -85,23 +87,30 @@ playback with system wait (default) or console controls.  When knitting .Rmd fil
 }}
 
 \examples{
-\dontrun{
-x <- sin(1:100000/(3*pi))
+\dontshow{
+wplayback <- FALSE
+}
+x <- sin(1:100000 / (3 * pi))
 wplay(x)
 
 # two notes
-y <- sin(1:100000/(5*pi))
+y <- sin(1:100000 / (5 * pi))
 wplay(x + y)
 
 # no playback
 wplay(x + y, wplayback = FALSE)
-wplayback = FALSE
+wplayback <- FALSE
 wplay(x)
 
-# use parent environment to toggle console playback controls 
-wplayback = TRUE
-wplay_controls = TRUE
-z <- sin(1:441000/(3*pi))  # playback takes 10 seconds.  Use console controls to stop.
-wplay(z)
+# use parent environment to toggle console playback controls
+wplayback <- TRUE
+\dontshow{
+wplayback <- FALSE
 }
+wplay_controls <- TRUE
+\dontshow{
+wplay_controls <- FALSE
+}
+z <- sin(1:441000 / (3 * pi)) # playback takes 10 seconds.  Use console controls to stop.
+wplay(z)
 }

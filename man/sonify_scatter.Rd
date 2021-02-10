@@ -24,7 +24,8 @@ sonify_scatter(
   fs = 44100,
   verbose = TRUE,
   stereo = FALSE,
-  under_hood = FALSE
+  under_hood = FALSE,
+  progbar = TRUE
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ sonify_scatter(
 \item{stereo}{logical: if \code{TRUE}, generates stereo output, with \code{x_var} on left ear and \code{y_var} on right.}
 
 \item{under_hood}{logical: if \code{TRUE}, returns list containing mappings used to construct output (wave vector/matrix is first element)}
+
+\item{progbar}{logical: if \code{TRUE} progress bar enabled}
 }
 \value{
 numeric vector: playable audio scatterplot
@@ -93,7 +96,7 @@ wplay(
 )
 
 
-# airquality dataset; 
+# airquality dataset;
 # order_var = "byrow" since dataset is ordered by day + month
 wplay_controls <- TRUE
 wplay(

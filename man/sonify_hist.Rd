@@ -12,7 +12,8 @@ sonify_hist(
   inst = "sine",
   duration = 2,
   volume = 0.75,
-  fs = 44100
+  fs = 44100,
+  progbar = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ sonify_hist(
 \item{volume}{numeric between 0 and 1: the relative volume of playback}
 
 \item{fs}{int: The sampling rate for playback}
+
+\item{progbar}{logical: if \code{TRUE} progress bar enabled}
 }
 \value{
 numeric vector representing the waveform of the sonified histogram
@@ -41,6 +44,6 @@ Map the relative frequencies to the pitches of the songs that are played in asce
 \examples{
 \dontrun{
 dat <- data.frame(x = rnorm(100))
-wplay(sonify_hist(dat,x))
+wplay(sonify_hist(dat, x))
 }
 }
