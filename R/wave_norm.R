@@ -6,9 +6,9 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' wave_norm(sin(2 * pi * 60 * (1:1000) + 2 * pi * 100 * (1:1000)))
-#' }
+#'
 wave_norm <- function(y) {
 
   # Cast as matrix, if not already

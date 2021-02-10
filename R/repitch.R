@@ -9,7 +9,7 @@
 #' @importFrom stats approx
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Generate pure tone at 420 Hz
 #' t <- seq(0, 1, length.out = 44100)
 #' y <- sin(2 * pi * 420 * t)
@@ -19,7 +19,7 @@
 #'
 #' # Play it again after pitch-shifting down two semitones
 #' wplay(repitch(y, -2))
-#' }
+#'
 repitch <- function(y, shift) {
   # Takes a single-channel (mono) waveform `y`
   # and shifts it by `shift` semitones.

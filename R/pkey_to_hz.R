@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # 49 is the piano key number for A440 (i.e. should return 440hz).
 #' pkey_to_hz(49)
 #'
@@ -28,7 +28,7 @@
 #'
 #' # play middle C / C4
 #' wplay(hz_to_sec(pkey_to_hz(40)))
-#' }
+#'
 pkey_to_hz <- function(pkey) {
   # NA handling; hz_to_sec returns vector of 0's if input hz = 0
   if (is.na(pkey)) {

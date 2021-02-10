@@ -12,10 +12,10 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' wplay_controls <- TRUE
 #' wplay(bach(decay = TRUE))
-#' }
+#'
 bach <- function(spd = 6, fs = 44100, inst_lab = "piano", decay = FALSE, decay_rate = -1, want_df = FALSE, stereo = FALSE, progbar = TRUE) {
   # right-hand piano keys (main thread)
   RH1_pkeys <- c(

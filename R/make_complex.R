@@ -9,7 +9,7 @@
 #' @importFrom seewave hilbert
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Create a signal that is a sum of harmonically related sinusoids
 #' fs <- 44100
 #' dur <- 2
@@ -32,7 +32,7 @@
 #' from_make_complex <- h$amp[1, 1:2000] * cos(h$phi[1, 1:2000])
 #' plot(from_decomp, col = "red")
 #' lines(from_make_complex, col = "blue")
-#' }
+#'
 make_complex <- function(d, fs = 44100) {
 
   # Initialize the matrix to contain the Hilbert-transformed decomposition

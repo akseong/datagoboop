@@ -15,7 +15,7 @@
 #' @importFrom seewave ffilter
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Create a signal that is a sum of harmonically related sinusoids
 #' fs <- 44100
 #' dur <- 2
@@ -32,7 +32,7 @@
 #'
 #' # First row is the sinusoid at the fundamental frequency
 #' plot(yd[1, 1:2000], type = "l")
-#' }
+#'
 decomp <- function(y, n_harm = 12, fs = 44100, f0 = 440) {
 
   # TODO: this can probably be made faster by pre-allocating matrix d

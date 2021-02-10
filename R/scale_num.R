@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' scale_num(mtcars$mpg)
 #'
 #' # looking under the hood:
@@ -24,7 +24,7 @@
 #' new_scale <- c(16, 20, 23, 25) + rep(0:4 * 12, each = 4)
 #' y <- scale_num(mtcars$mpg, new_scale = new_scale)
 #' wplay(notes(y, dur = 1 / 4, vol = .25), normalize = FALSE)
-#' }
+#'
 scale_num <- function(x,
                       tonic_pkey = 40,
                       n_octaves = 2,

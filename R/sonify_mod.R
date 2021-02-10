@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Run a linear regression on the mtcars data set
 #' mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 #'
@@ -17,7 +17,7 @@
 #'
 #' # Play the studentized residuals for this model
 #' wplay(sonify_mod(mod, mode = "studres"))
-#' }
+#'
 sonify_mod <- function(lm_obj, mode = "qq", tonic_pkey = 34, alpha = 0.05, show_plot = FALSE) {
   # Wrapper function for sonify_qq() and sonify_studres()
   if (mode == "qq") {

@@ -13,13 +13,13 @@
 #' @importFrom stats qt
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Run a linear regression on the mtcars data set
 #' mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 #'
 #' # Play the studentized residuals for this model fit
 #' wplay(sonify_studres(mod))
-#' }
+#'
 sonify_studres <- function(lm_obj, tonic_pkey = 34, alpha = 0.05, show_plot = FALSE) {
   #  If the residual
   # differs significantly from the null, a dissonant chord is played.

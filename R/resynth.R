@@ -15,7 +15,7 @@
 #' @importFrom stats approx
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Specify the parameters by hand for a 360 Hz complex tone with linear decay
 #' w <- resynth(hz = 360, dur = 1, env = c(1, 0), 
 #'              amp = rev(seq(0, 1, length.out = 6)), 
@@ -23,7 +23,7 @@
 #'
 #' # Play it out loud
 #' wplay(w)
-#' }
+#'
 resynth <- function(hz, dur, env, amp, phi, fs_old = 44100, fs_new = 44100) {
 
   # Set up time vectors to help with interpolation and stretching

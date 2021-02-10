@@ -37,7 +37,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' wplay(
 #'   sonify_scatter(
 #'     data = mtcars,
@@ -62,7 +62,7 @@
 #'     dur_scaling = "binned 4 exp 2 rev"
 #'   )
 #' )
-#' }
+#'
 sonify_scatter <- function(data, x_var, y_var, # need to be specified
                            tonic_x = 40, # default is middle C (C4)
                            tonic_y = 52, # default is C5

@@ -16,10 +16,10 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' wplay(note(40))
 #' wplay(notes(40, 44, 47))
-#' }
+#'
 note <- function(pkey, vol = 1, dur = 1, fs = 44100, inst_lab = "sine", decay = FALSE, decay_rate = 6) {
   # turns piano key into playable wave (non-vectorized)
   # dur = duration.  dur = 1 corresponds to 1 second of playback

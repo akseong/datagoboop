@@ -16,7 +16,7 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #' @importFrom utils head
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Generate a 250 Hz sawtooth wave and save it in the local folder
 #' # using the save.wave() function from library(audio)
 #' fs <- 44100
@@ -33,7 +33,7 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #' # Use the newly generated sound in a short melody
 #' melody <- c(40, 38, 36, 38, 40, 40, 40)
 #' wplay(notes(melody, dur = 0.25, vol = 0.3, inst_lab = "saw"), normalize = FALSE)
-#' }
+#' 
 add_inst <- function(filepath, f0 = 440, fs = 44100, inst_lab) {
 
   # Check that this won't overwrite an existing sound

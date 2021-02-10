@@ -8,9 +8,9 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' html_tag_audio("foo")
-#' }
+#'
 html_tag_audio <- function(file_path, type = "wav") {
   # code from https://community.rstudio.com/t/audio-files-in-r-markdown/20874/3
   htmltools::tags$audio(

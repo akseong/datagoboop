@@ -13,10 +13,10 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' dat <- data.frame(x = rnorm(100))
 #' wplay(sonify_box(dat, x))
-#' }
+#'
 sonify_box <- function(data,
                        var,
                        group_var = NULL,

@@ -9,10 +9,10 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' x <- major_scale(49)
 #' wplay(notes(x, dur = 1 / 8))
-#' }
+#'
 make_scale <- function(tonic_pkey, n_octaves = 1, scale_type = "major") {
   # creates a vector of piano key numbers corresponding
   # to notes of a major/minor scale starting at pkey.

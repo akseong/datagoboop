@@ -18,10 +18,10 @@
 #' @importFrom stats IQR
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' dat <- data.frame(x = rnorm(100))
 #' wplay(sonify_hist(dat, x))
-#' }
+#'
 sonify_hist <- function(data,
                         var,
                         breaks = "Sturges",

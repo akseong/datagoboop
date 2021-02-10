@@ -25,9 +25,9 @@
 #' (enforces non-negativity, reports 0's and NA's)
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' scaling_parser(x = airquality$Ozone, scaling = "binned 6 exp 1.5")
-#' }
+#'
 scaling_parser <- function(x, scaling = NULL,
                            msg_varname = "x",
                            non_neg = TRUE,

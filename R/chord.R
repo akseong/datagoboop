@@ -9,9 +9,9 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' wplay(chord(pkey = c(40, 44, 47), dur = 3))
-#' }
+#'
 chord <- function(pkey, vol = 1, dur = 1, fs = 44100, inst_lab = "sine", decay = FALSE, decay_rate = 6) {
   # input: piano keys in desired chord;
   # output: playable wave for a chord

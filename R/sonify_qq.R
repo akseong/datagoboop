@@ -12,13 +12,13 @@
 #' @importFrom utils tail
 #'
 #' @examples
-#' \dontrun{
+#' \dontshow{wplayback <- FALSE}
 #' # Run a linear regression on the mtcars data set
 #' mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 #'
 #' # Play the QQ plot for this model fit
 #' wplay(sonify_qq(mod))
-#' }
+#'
 sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = progbar) {
   #  Sounds that appear in the left ear are on the
   # positive side of the x=y line, sounds that appear in the right ear on the negative
