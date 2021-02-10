@@ -129,7 +129,7 @@ wplay <- function(y, vol = 0.25, normalize = TRUE, fs = 44100,
     }
 
     # save file locally to load into html
-    seewave::savewav(y, f = fs, file = file_path)
+    audio::save.wave(audio::as.audioSample(y, rate = fs), where = file_path)
     html_tag_audio(file_path = file_path)
   } else if (wplayback) {
     if (wplay_controls) {
