@@ -1,0 +1,100 @@
+---
+title: "Meeting with JooYoung Seon"
+author: "Jaylen Lee, Arnie Seong, Sebastian Waz"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  html_document:
+    df_print: paged
+    theme: flatly
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    code_fold: hide
+urlcolor: blue
+---
+
+
+## Notes from Arnie
+
+Notes I took from meeting with Jooyoung
+ 
+<https://www.nfbnet.org/mailman/listinfo/blindrug_nfbnet.org>
+ 
+ &nbsp;
+ 
+ 
+
+SAS Graphics Accelerator
+<https://chrome.google.com/webstore/detail/sas-graphics-accelerator/ockmipfaiiahknplinepcaogdillgoko?hl=en>
+
++ interactivity, using arrow keys
++ 3-axes, e.g. bubble chart
++ interactivity via shiny / html
+
+examples: <https://support.sas.com/accessibility/Samples/COVID-19/index.html>
+ 
+<https://accessiblegraphs.org/english_guides/learnMore-en.html?lang=en>
+
+<https://covid.ski.org/>
+
+<https://www.ski.org/project/a11y-covid-19>
+
+&nbsp;
+
+
+
+Jonathon Goffrey (sp?) - leader of blind R user group
+ 
+Long-term goals:
+
++ ggplot2-style syntax
++ keyboard interactivity
++ I'm a little jelly of the sound quality/richness in SAS' thingy
+ 
+ToDo:
+
++ create function to connect web interface (e.g. populate the output in a web browser rather than console)
++ output of wplay() into browser / web interface
++ longer run goal: full interactivity - probably using javascript
+
+
+
+## Notes from Sebastian
+
+Suggested to join mailing list Blind R user group (led by Jonathan Gottfried and would give especially good feedback): <https://www.nfbnet.org/mailman/listinfo/blindrug_nfbnet.org>.
+
+Suggested that we introduce our package, so users can give feedback. They were discussing a ggplot type pipeline and syntax, would be really awesome (I think pipe operators, etc.?)
+
+Maybe also GGplot style functionality: pick a sonification format (hist, scatter, etc.) then pick variables to map to
+
+* Stereo space (pan)
+* Pitch
+* Time
+* More complex features:
+  + Timbre
+  + Consonance/dissonance
+  + Rhythm
+
+“most advanced data sonification tool” SAS Graphics Accelerator accessibility: <https://support.sas.com/accessibility/Samples/COVID-19/index.html>
+
+Major suggestion: interactivity is a major need for blind users
+
+Interactive javascript package for sonification and blind accessibility: <https://accessiblegraphs.org/?lang=en>
+ 
+Covid19 sonification: <https://www.ski.org/project/a11y-covid-19>
+ 
+ 
+We want keyboard interactivity, ADVANCED interactivity
+
+rmarkdown does not have predefined audio playback interface. We need to create a standard one?
+
+Sonify package creates file in tmp directory upon any new function call.
+“universal design”: sonification can benefit sighted R users too
+ 
+FOREMOST TODOs:
+
+* Create a function to output to browser (include having a playback button) instead of in console. Connection between output and web interface. Which could then be used in shiny or R Markdown
+* Full keyboard interactivity (get javascript code working with it: accessible graphs).

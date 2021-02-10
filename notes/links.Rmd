@@ -1,0 +1,68 @@
+---
+title: "Ideas, links"
+author: "Jaylen Lee, Arnie Seong, Sebastian Waz"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  html_document:
+    df_print: paged
+    theme: flatly
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    code_fold: hide
+urlcolor: blue
+---
+
+
+Creative musical sonifications:
+
+<https://www.c82.net/blog/?id=72>
+
+<https://mymodernmet.com/classical-music-data-visualizations-nicholas-rougeux/> 
+
+&nbsp;
+
+
+
+Possibly publish in The R Journal?
+
+<https://journal.r-project.org/>
+
+&nbsp;
+
+
+
+Presentation by JooYoung Seon re: non-visual interactions with R/RStudio packages:
+
+<https://global.rstudio.com/student/page/40617>
+
+&nbsp;
+
+
+
+CURAT sonification games:
+
+<http://curat.informatik.uni-bremen.de/en/download.html>
+
+<https://play.google.com/store/apps/details?id=com.University_Bremen.Curat&hl=de> 
+
+&nbsp;
+
+
+
+Arnie’s blog post introducing datagoboop:
+
+<https://arnie.rbind.io/2021-01-18/datagoboop-intro/>
+
+&nbsp;
+
+
+
+Presentation by JooYoung Seo: "Accessible Data Science Beyod Visual Models"
+
+<https://rstudio.com/resources/rstudioglobal-2021/accessible-data-science-beyond-visual-models-non-visual-interactions-with-r-and-rstudio-packages/>
+
+&nbsp;
