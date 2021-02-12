@@ -32,4 +32,5 @@ Imports:
     stats,
     stringr,
     utils
-    
+Suggests: 
+    testthat

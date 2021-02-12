@@ -27,11 +27,15 @@ wave_norm <- function(y) {
 
   # Remove DC offset
   bias <- colMeans(y, na.rm = TRUE)
-  y <- y - bias
+  y <- sweep(y, 2, bias)
+  
+  # Round to account for floating point errors near zero
+  # (note that our .wavs are saved at 16-bit depth, so the sample resolution is 1 / (2 ^ 16) ≈ 1e-5)
+  y <- round(y, 12)
+  
+  # Find normalizing constant (scale == 0 implies y is all zeros)
   M <- max(y, na.rm = TRUE)
   m <- min(y, na.rm = TRUE)
-
-  # Find normalizing constant (scale == 0 implies y is all zeros)
   scaling <- if (abs(M) > abs(m)) abs(M) else abs(m)
   if (scaling > 0) {
     y <- y / scaling
