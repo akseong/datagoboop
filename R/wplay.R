@@ -219,7 +219,7 @@ cplay <- function(y, vol = 0.5, normalize = TRUE, fs = 44100, eval_entry) {
   t_st <- Sys.time() # start time
 
   while (t_left > 0) {
-    key <- readline("'p' + [Enter] to pause/resume, s' + [Enter] to stop:  ")
+    key <- readline("'p' + [Enter] to pause/resume, 's' + [Enter] to stop:  ")
     if (key != "p"){
       # while loop stop condition
       t_left <- -1   
