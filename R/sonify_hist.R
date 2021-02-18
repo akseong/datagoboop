@@ -48,7 +48,7 @@ sonify_hist <- function(data,
 
   # Making histogram
   heights <- hist(x,
-    breaks = seq(min(x), max(x) + IQR(x, na.rm = TRUE) / n_breaks, length = n_breaks),
+    breaks = seq(min(x, na.rm = TRUE), max(x, na.rm = TRUE) + IQR(x, na.rm = TRUE) / n_breaks, length = n_breaks),
     right = FALSE,
     plot = FALSE
   )$counts
