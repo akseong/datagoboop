@@ -37,8 +37,8 @@ hz_to_sec(hz, dur = 1, fs = 44100)
 }}
 
 \examples{
-\dontrun{
-# 49 is the piano key number for A440 (i.e. should return 440hz).  
+\dontshow{wplayback <- FALSE}
+# 49 is the piano key number for A440 (i.e. should return 440hz).
 pkey_to_hz(49)
 
 # vector for A440
@@ -47,5 +47,5 @@ wplay(A440)
 
 # play middle C / C4
 wplay(hz_to_sec(pkey_to_hz(40)))
-}
+
 }

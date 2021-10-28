@@ -30,7 +30,7 @@ A 1 x n (if \code{mode == "studres"}) or 2 x n (if \code{mode == "qq"}) matrix r
 Used to call \code{sonify_qq()} and \code{sonify_studres()} via a single function. Both of these subsidiary functions take an \code{lm} object as their input and produce a sonfied version of a standard model diagnostic.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Run a linear regression on the mtcars data set
 mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 
@@ -39,5 +39,5 @@ wplay(sonify_mod(mod, mode = "qq"))
 
 # Play the studentized residuals for this model
 wplay(sonify_mod(mod, mode = "studres"))
-}
+
 }

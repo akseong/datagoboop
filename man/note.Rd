@@ -59,8 +59,8 @@ Turns piano key number into playable wave.  (use \code{note()} for a single pian
 }}
 
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 wplay(note(40))
 wplay(notes(40, 44, 47))
-}
+
 }

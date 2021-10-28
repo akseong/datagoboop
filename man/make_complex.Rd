@@ -18,7 +18,7 @@ list containing phase \code{phi} and amplitude \code{amp} of the complex wavefor
 Takes the real-valued output from \code{decomp()} and infers a complex-valued version of each row. This allows us to figure out the amplitude over time ("envelope") and phase of each component sine wave.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Create a signal that is a sum of harmonically related sinusoids
 fs <- 44100
 dur <- 2
@@ -41,5 +41,5 @@ from_decomp <- yd[1, 1:2000]
 from_make_complex <- h$amp[1, 1:2000] * cos(h$phi[1, 1:2000])
 plot(from_decomp, col = "red")
 lines(from_make_complex, col = "blue")
-}
+
 }

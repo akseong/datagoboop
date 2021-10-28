@@ -18,7 +18,7 @@ html audio tag
 Used in \code{wplay()} when knitting an .Rmd file to html.  Inserts audio tags / creates audio player within document.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 html_tag_audio("foo")
-}
+
 }

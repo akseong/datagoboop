@@ -36,7 +36,7 @@ dur*fs length numeric vector of the chord.
 Input piano keys in desired chord; outputs playable wave for a chord
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 wplay(chord(pkey = c(40, 44, 47), dur = 3))
-}
+
 }

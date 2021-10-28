@@ -16,7 +16,7 @@ a normalized wave of the same dimension as the input
 Normalize waves to ensure input to wplay() is valid
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 wave_norm(sin(2 * pi * 60 * (1:1000) + 2 * pi * 100 * (1:1000)))
-}
+
 }

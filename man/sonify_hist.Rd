@@ -42,8 +42,8 @@ numeric vector representing the waveform of the sonified histogram
 Map the relative frequencies to the pitches of the songs that are played in ascending order of your variable.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 dat <- data.frame(x = rnorm(100))
 wplay(sonify_hist(dat, x))
-}
+
 }

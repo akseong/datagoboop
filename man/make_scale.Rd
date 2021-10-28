@@ -43,8 +43,8 @@ Generates piano key designations for (ascending) scale at specified tonic and nu
 }}
 
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 x <- major_scale(49)
 wplay(notes(x, dur = 1 / 8))
-}
+
 }

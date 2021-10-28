@@ -22,11 +22,11 @@ A 2 x n matrix representing the sound to be played through each ear. Note that e
 short summary
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Run a linear regression on the mtcars data set
 mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 
 # Play the QQ plot for this model fit
 wplay(sonify_qq(mod))
-}
+
 }

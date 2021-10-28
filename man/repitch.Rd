@@ -19,7 +19,7 @@ Takes a single-channel (mono) waveform \code{y} and shifts it by \code{shift} se
 \code{shift} may be positive or negative, or non-integer. Note that shifting pitch is accomplished via time dilation so the new note will be shorter for positive values of shift and longer for negative values.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Generate pure tone at 420 Hz
 t <- seq(0, 1, length.out = 44100)
 y <- sin(2 * pi * 420 * t)
@@ -29,5 +29,5 @@ wplay(y)
 
 # Play it again after pitch-shifting down two semitones
 wplay(repitch(y, -2))
-}
+
 }

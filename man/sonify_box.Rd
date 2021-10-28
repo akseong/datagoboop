@@ -43,8 +43,8 @@ A sound will slide pitchwise along the distribution of the data.
 You can compare distributions by comparing the range of pitches being traveled.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 dat <- data.frame(x = rnorm(100))
 wplay(sonify_box(dat, x))
-}
+
 }

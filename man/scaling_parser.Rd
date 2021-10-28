@@ -48,7 +48,7 @@ Mostly makes sense to use this function for volume and duration variables
 (enforces non-negativity, reports 0's and NA's)
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 scaling_parser(x = airquality$Ozone, scaling = "binned 6 exp 1.5")
-}
+
 }

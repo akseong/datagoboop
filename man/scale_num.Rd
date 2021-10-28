@@ -36,17 +36,17 @@ either a numerical vector of piano key numbers (if \code{under_hood = FALSE}; de
 Place \code{x} values in equally-spaced bins (i.e. like a histogram's bins), then maps bins to specified scale (default scale is C4 major, 2 octaves).  Number of bins = number of notes in specified scale (i.e. dependent on \code{n_octaves}).
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 scale_num(mtcars$mpg)
 
 # looking under the hood:
 x <- scale_num(mtcars$mpg, under_hood = TRUE)
 x
-wplay(notes(x$df$x_pitch, dur = 1/4, vol = 0.25), normalize = FALSE)
+wplay(notes(x$df$x_pitch, dur = 1 / 4, vol = 0.25), normalize = FALSE)
 
 # specifying a different scale: e.g. equally-spaced arpeggio
 new_scale <- c(16, 20, 23, 25) + rep(0:4 * 12, each = 4)
 y <- scale_num(mtcars$mpg, new_scale = new_scale)
-wplay(notes(y, dur = 1/4, vol = .25), normalize = FALSE)
-}
+wplay(notes(y, dur = 1 / 4, vol = .25), normalize = FALSE)
+
 }

@@ -22,11 +22,11 @@ A 1 x n matrix representing the sound to be played. Each chord is an observation
 short summary
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Run a linear regression on the mtcars data set
 mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
 
 # Play the studentized residuals for this model fit
 wplay(sonify_studres(mod))
-}
+
 }

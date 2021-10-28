@@ -28,7 +28,7 @@ n_samples length numeric vector representing the sound given by the above parame
 Synthesize tones using parameters to specify envelope, relative amplitude of harmonics, and relative phase of harmonics. Generally, these parameters will be derived from pre-recorded sounds, and this function will be called by \code{snd_inst()}.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Specify the parameters by hand for a 360 Hz complex tone with linear decay
 w <- resynth(hz = 360, dur = 1, env = c(1, 0), 
              amp = rev(seq(0, 1, length.out = 6)), 
@@ -36,5 +36,5 @@ w <- resynth(hz = 360, dur = 1, env = c(1, 0),
 
 # Play it out loud
 wplay(w)
-}
+
 }

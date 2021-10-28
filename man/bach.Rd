@@ -39,8 +39,8 @@ vector or matrix
 Generates playable vector of the first half of Prelude 2 (BWV 871) from The Well-Tempered Clavier, Book II
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 wplay_controls <- TRUE
 wplay(bach(decay = TRUE))
-}
+
 }

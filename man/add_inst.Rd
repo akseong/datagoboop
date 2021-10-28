@@ -22,7 +22,7 @@ add_inst(filepath, f0 = 440, fs = 44100, inst_lab)
 Takes a user-specified sound (stored at \code{filepath} on the local machine), infers synthesizer parameters from the sound, and saves the synthesizer parameters to be used later (e.g., via \code{notes()}) under the label \code{inst_lab}.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Generate a 250 Hz sawtooth wave and save it in the local folder
 # using the save.wave() function from library(audio)
 fs <- 44100
@@ -39,5 +39,5 @@ add_inst(here::here("example.wav"), f0 = f0, fs = fs, inst_lab = "saw")
 # Use the newly generated sound in a short melody
 melody <- c(40, 38, 36, 38, 40, 40, 40)
 wplay(notes(melody, dur = 0.25, vol = 0.3, inst_lab = "saw"), normalize = FALSE)
-}
+
 }

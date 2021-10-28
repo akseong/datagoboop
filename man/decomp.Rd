@@ -22,7 +22,7 @@ Decomposition matrix. Each row represents one component sine wave in \code{y}, a
 Decomposes the mono waveform \code{y} using a bank of harmonically related band-pass filters (i.e., they have center frequencies that are integer multiples of \code{f0}). Each row of the output is a filtered version of the input. If the input is a single complex tone with pitch \code{f0}, this function isolates the harmonics in the complex.
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 # Create a signal that is a sum of harmonically related sinusoids
 fs <- 44100
 dur <- 2
@@ -39,5 +39,5 @@ yd <- decomp(y, n_harm = n_harm, fs = fs, f0 = f0)
 
 # First row is the sinusoid at the fundamental frequency
 plot(yd[1, 1:2000], type = "l")
-}
+
 }

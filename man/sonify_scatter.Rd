@@ -85,7 +85,7 @@ Construct an audio scatterplot.
 }
 }
 \examples{
-\dontrun{
+\dontshow{wplayback <- FALSE}
 wplay(
   sonify_scatter(
     data = mtcars,
@@ -110,5 +110,5 @@ wplay(
     dur_scaling = "binned 4 exp 2 rev"
   )
 )
-}
+
 }
