@@ -64,6 +64,6 @@ sonify_hist <- function(data,
   snares <- create_count(duration, fs)
 
   # Adding together
-  wave_out <- volume * wave_norm(height_notes + snares)
+  wave_out <- volume * suppressWarnings(wave_norm(height_notes + snares))
   return(wave_out)
 }
