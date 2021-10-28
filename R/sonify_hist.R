@@ -31,7 +31,10 @@ sonify_hist <- function(data,
                         volume = 0.75,
                         fs = 44100,
                         progbar=TRUE) {
-
+  
+  if(class(data) == "numeric"){
+    data = data.frame(var = var)
+  }
   # Reading in data
   x <- data %>%
     select({{ var }}) %>%
