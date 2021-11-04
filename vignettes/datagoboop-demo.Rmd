@@ -1,0 +1,92 @@
+---
+title: "How to use DataGoBoop"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{datagoboop-demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+Load the package.
+```{r setup}
+library(datagoboop)
+```
+
+## Histograms
+
+Use `sonify_hist`.
+
+```{r, eval = F}
+dat <- data.frame(x = rnorm(100))
+wplay(sonify_hist(dat, x))
+```
+
+## Box plots
+
+Use `sonify_box`.
+
+```{r, eval = F}
+dat <- data.frame(x = rnorm(100))
+wplay(sonify_box(dat, x))
+```
+
+## Scatter plots
+
+Use `sonify_scatter`.
+
+```{r, eval = F}
+wplay(
+  sonify_scatter(
+    data = mtcars,
+    x_var = "mpg",
+    y_var = "disp",
+    factor_var = "gear"
+  )
+)
+
+
+# airquality dataset;
+# order_var = "byrow" since dataset is ordered by day + month
+wplay_controls <- TRUE
+wplay(
+  sonify_scatter(
+    data = airquality,
+    x_var = "Ozone",
+    y_var = "Temp",
+    order_var = "byrow",
+    factor_var = "Month",
+    duration = "Wind",
+    dur_scaling = "binned 4 exp 2 rev"
+  )
+)
+```
+
+## Model diagnostics
+
+For a QQ plot, use `sonify_mod` with `mode = "qq"`.
+
+```{r, eval = F}
+# Run a linear regression on the mtcars data set
+mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
+
+# Play the QQ plot for this model fit
+wplay(sonify_mod(mod, mode = "qq"))
+```
+
+For studentized residuals, use `sonify_mod` with `mode = "studres"`.
+
+```{r, eval = F}
+# Run a linear regression on the mtcars data set
+mod <- lm(mpg ~ 1 + cyl + hp + wt, data = mtcars)
+
+# Play the studentized residuals for this model
+wplay(sonify_mod(mod, mode = "studres"))
+```
