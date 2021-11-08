@@ -1,6 +1,3 @@
-# All the instrument data, saved as a global variable
-inst <- readRDS(here::here("sounds", "instruments.rds"))
-
 #' @title Add an instrument
 #' @description Takes a user-specified sound (stored at \code{filepath} on the local machine), infers synthesizer parameters from the sound, and saves the synthesizer parameters to be used later (e.g., via \code{notes()}) under the label \code{inst_lab}.
 #'
@@ -8,12 +5,13 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #' @param f0 numeric: the fundamental frequency of the input sound in Hertz. This defaults to 440 (A above middle C in concert tuning), so the user should either provide a sound file that matches this pitch or determine the appropriate \code{f0} of the sound file they are using.
 #' @param fs integer: the sampling frequency (or frame rate) of the sound file in Hertz. This defaults to 44100, but 48000 is not uncommon. The user should check the frame rate of their sound file beforehand.
 #' @param inst_lab string: the label that will be used to refer to the synthesizer parameters generated. Note that "bass", "piano", "string", and "wind" are already assigned by default and cannot be overwritten. This string is used to index a \code{list}, so verify that \code{inst_lab} is a valid list index.
+#' @param save_dir string: the location where R will save the custom instrument sounds as \code{instruments_custom.rda}. If unspecified, R will save in the current working directory.
 #'
 #' @return -1 if the user tries to assign an \code{inst_lab} that already exists. Otherwise, returns nothing.
 #' @export
 #' @importFrom audio load.wave
 #' @importFrom here here
-#' @importFrom utils head
+#' @importFrom utils data head
 #'
 #' @examples
 #' \dontshow{wplayback <- FALSE}
@@ -34,14 +32,33 @@ inst <- readRDS(here::here("sounds", "instruments.rds"))
 #' melody <- c(40, 38, 36, 38, 40, 40, 40)
 #' wplay(notes(melody, dur = 0.25, vol = 0.3, inst_lab = "saw"), normalize = FALSE)
 #' 
-add_inst <- function(filepath, f0 = 440, fs = 44100, inst_lab) {
+add_inst <- function(filepath, f0 = 440, fs = 44100, inst_lab, save_dir) {
 
+  # Use current working directory if `save_dir` not specified
+  if (missing(save_dir)) {
+    save_dir <- here::here()
+  }
+  
+  # Load the instrument data included in DataGoBoop
+  data("inst")
+  
   # Check that this won't overwrite an existing sound
   if (inst_lab %in% names(inst)) {
-    warning(paste("The instrument name `", inst_lab, "` already exists. Quitting."))
+    warning(paste("The instrument name `", inst_lab, "` is already the name of a preset instrument. Quitting."))
     return(-1)
   }
 
+  # Check if instruments_custom.rda already exists,
+  # and if it does, check if desired label name is already taken
+  custom_file <- paste(save_dir, "/inst_custom.rda", sep = "")
+  if (file.exists(custom_file)) {
+    load(custom_file)
+    if (inst_lab %in% names(inst_custom)) {
+      warning(paste("The instrument name `", inst_lab, "` already exists in `inst_custom`. Quitting."))
+      return(-1)
+    }
+  }
+  
   # Load the sound
   w <- audio::load.wave(filepath)
 
@@ -84,9 +101,14 @@ add_inst <- function(filepath, f0 = 440, fs = 44100, inst_lab) {
   # Get the relative phase of the harmonics
   phi_f <- H$phi[, peak[1]]
 
+  # Create `inst_custom` if it wasn't loaded from existing instruments_custom.rda earlier
+  if (!exists("inst_custom")) {
+    inst_custom <- list()
+  }
+  
   # Save the results
-  inst[[inst_lab]] <<- list("env" = env, "amp_f" = amp_f, "phi_f" = phi_f)
+  inst_custom[[inst_lab]] <- list("env" = env, "amp_f" = amp_f, "phi_f" = phi_f)
 
   # Save the results for later
-  saveRDS(inst, here::here("sounds", "instruments.rds"))
+  save(inst_custom, file = custom_file)
 }

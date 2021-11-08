@@ -4,7 +4,7 @@
 \alias{add_inst}
 \title{Add an instrument}
 \usage{
-add_inst(filepath, f0 = 440, fs = 44100, inst_lab)
+add_inst(filepath, f0 = 440, fs = 44100, inst_lab, save_dir)
 }
 \arguments{
 \item{filepath}{string: the location of a brief sound file that the synthesizer will try to emulate.}
@@ -14,6 +14,8 @@ add_inst(filepath, f0 = 440, fs = 44100, inst_lab)
 \item{fs}{integer: the sampling frequency (or frame rate) of the sound file in Hertz. This defaults to 44100, but 48000 is not uncommon. The user should check the frame rate of their sound file beforehand.}
 
 \item{inst_lab}{string: the label that will be used to refer to the synthesizer parameters generated. Note that "bass", "piano", "string", and "wind" are already assigned by default and cannot be overwritten. This string is used to index a \code{list}, so verify that \code{inst_lab} is a valid list index.}
+
+\item{save_dir}{string: the location where R will save the custom instrument sounds as \code{instruments_custom.rda}. If unspecified, R will save in the current working directory.}
 }
 \value{
 -1 if the user tries to assign an \code{inst_lab} that already exists. Otherwise, returns nothing.

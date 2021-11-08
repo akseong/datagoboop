@@ -33,4 +33,5 @@ Imports:
     stringr,
     utils
 Suggests: 
-    testthat
+    testthat,
+    rmarkdown

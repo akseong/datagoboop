@@ -4,7 +4,7 @@
 \alias{snd_inst}
 \title{Synthesize a sound by specifying the instrument name}
 \usage{
-snd_inst(hz, dur, inst_lab = "piano")
+snd_inst(hz, dur, inst_lab = "piano", dir_custom)
 }
 \arguments{
 \item{hz}{numeric: frequency of interest for playback}
@@ -12,6 +12,8 @@ snd_inst(hz, dur, inst_lab = "piano")
 \item{dur}{integer: duration of the sound in seconds}
 
 \item{inst_lab}{string: instrument to be used. Valid input: "piano", "string", "wind", "bass", or label for sound created using \code{add_inst()}}
+
+\item{dir_custom}{string: directory where instruments_custom.rda is saved. Not necessary if using only present sounds. If unspecified, defaults to the working directory.}
 }
 \value{
 numeric vector representing the sound to be played
