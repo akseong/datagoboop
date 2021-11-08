@@ -19,7 +19,7 @@
 #' # Play the QQ plot for this model fit
 #' wplay(sonify_qq(mod))
 #'
-sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = progbar) {
+sonify_qq <- function(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = TRUE) {
   #  Sounds that appear in the left ear are on the
   # positive side of the x=y line, sounds that appear in the right ear on the negative
   # side of the x=y line. Sounds that appear in the center are near to the x=y line.

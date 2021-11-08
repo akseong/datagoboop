@@ -4,7 +4,7 @@
 \alias{sonify_qq}
 \title{A sonified version of a QQ plot.}
 \usage{
-sonify_qq(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = progbar)
+sonify_qq(lm_obj, tonic_pkey = 34, show_plot = FALSE, progbar = TRUE)
 }
 \arguments{
 \item{lm_obj}{lm object returned by base R's \code{lm} function}
