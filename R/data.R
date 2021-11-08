@@ -16,4 +16,4 @@
 #' }
 #' @source These data were generated manually using the \code{add_inst} function
 #' and representative samples of each kind of instrument.
-"instruments"
+"inst"
